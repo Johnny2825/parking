@@ -1,7 +1,7 @@
 server:
   port: 8080
-  servlet:
-    context-path: /parking
+#  servlet:
+#    context-path: /parking
 
 spring:
 #  datasource:
