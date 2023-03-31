@@ -18,7 +18,10 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
         return UserDto.builder()
-
+                .id(userEntity.getId())
+                .firstName(userEntity.getFirstName())
+                .lastName(userEntity.getLastName())
+                .email(userEntity.getEmail())
                 .build();
     }
 
@@ -28,7 +31,10 @@ public class UserMapperImpl implements UserMapper {
             return null;
         }
         return UserEntity.builder()
-
+                .id(userDto.getId())
+                .firstName(userDto.getFirstName())
+                .lastName(userDto.getLastName())
+                .email(userDto.getEmail())
                 .build();
     }
 }

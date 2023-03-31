@@ -8,6 +8,8 @@ import ru.example.micro.parking.entity.UserEntity;
  * @author Tarkhov Evgeniy
  */
 public interface UserMapper {
+
     UserDto map(UserEntity userEntity);
+
     UserEntity map(UserDto userDto);
 }

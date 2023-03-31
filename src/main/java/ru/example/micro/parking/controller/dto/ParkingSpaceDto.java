@@ -16,6 +16,6 @@ public class ParkingSpaceDto {
     private Long id;
     private String code;
     private Boolean status;
-    private ZonedDateTime timeFrom;
-    private ZonedDateTime timeTo;
+//    private ZonedDateTime timeFrom;
+//    private ZonedDateTime timeTo;
 }

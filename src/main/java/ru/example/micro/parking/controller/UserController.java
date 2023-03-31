@@ -35,7 +35,7 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.noContent().build());
     }
 
-    @PutMapping("/user/{userId}")
+    @PutMapping("/users/{userId}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("userId") Long userId,
                                               @RequestBody UserDto userDto) {
         return userService.updateUser(userId, userDto)
@@ -43,7 +43,7 @@ public class UserController {
                 .orElseGet(() -> ResponseEntity.noContent().build());
     }
 
-    @DeleteMapping("/user/{userId}")
+    @DeleteMapping("/users/{userId}")
     public ResponseEntity<UserDto> deleteUser(@PathVariable("userId") Long userId) {
         return userService.deleteUser(userId)
                 .map(ResponseEntity::ok)

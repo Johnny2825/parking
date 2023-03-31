@@ -19,14 +19,14 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @Entity
-@Table(name = "user")
+@Table(name = "u_user")
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserEntity {
     @EqualsAndHashCode.Exclude
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_id_seq")
-    @SequenceGenerator(name="user_id_seq", sequenceName = "user_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "u_user_id_seq")
+    @SequenceGenerator(name="u_user_id_seq", sequenceName = "u_user_id_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
     @Column(name = "first_name")

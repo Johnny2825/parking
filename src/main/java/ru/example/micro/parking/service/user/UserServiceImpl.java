@@ -35,8 +35,10 @@ public class UserServiceImpl implements UserService {
         if (isNull(userDto)) {
             return Optional.empty();
         }
-        UserEntity userEntity = userRepository.save(userMapper.map(userDto));
-        return Optional.of(userMapper.map(userEntity));
+        UserEntity userEntityForCreate = userMapper.map(userDto);
+        userEntityForCreate.setActive(true);
+        UserEntity userEntityCreated = userRepository.save(userEntityForCreate);
+        return Optional.of(userMapper.map(userEntityCreated));
     }
 
     @Override
