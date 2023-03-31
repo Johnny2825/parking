@@ -4,11 +4,11 @@ server:
     context-path: /parking
 
 spring:
-#  datasource:
-#    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=weather
-#    username: postgres
-#    password: postgres
-#  jpa:
-#    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=parking
+    username: postgres
+    password: postgres
+  jpa:
+    show-sql: true
   liquibase:
     change-log: classpath:db/changelog-master.yaml
