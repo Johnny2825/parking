@@ -1,4 +1,4 @@
-package ru.example.micro.parking.service.parkingplace;
+package ru.example.micro.parking.service.parkingspace;
 
 import com.querydsl.core.types.Predicate;
 import org.springframework.data.domain.Page;
@@ -8,7 +8,7 @@ import ru.example.micro.parking.controller.dto.ParkingSpaceDto;
 /**
  * @author Tarkhov Evgeniy
  */
-public interface ParkingPlaceService {
+public interface ParkingSpaceService {
 
     Page<ParkingSpaceDto> getAllParkingSpace(Predicate predicate, Pageable pageable);
 

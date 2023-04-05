@@ -22,14 +22,14 @@ import java.time.ZonedDateTime;
 @Data
 @Builder
 @Entity
-@Table(name = "parking_space")
+@Table(name = "reservation_parking_space")
 @NoArgsConstructor
 @AllArgsConstructor
-public class ParkingSpaceEntity {
+public class ReservationParkingSpaceEntity {
     @EqualsAndHashCode.Exclude
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "parking_space_id_seq")
-    @SequenceGenerator(name="parking_space_id_seq", sequenceName = "parking_space_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservation_parking_space_id_seq")
+    @SequenceGenerator(name="reservation_parking_space_id_seq", sequenceName = "reservation_parking_space_id_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
     @Column(name = "parking_id")
@@ -40,9 +40,13 @@ public class ParkingSpaceEntity {
     private Integer place;
     @Column(name = "user_id")
     private Long userId;
+//    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ", shape = JsonFormat.Shape.STRING)
+//    @JsonProperty("createDateTime")
     @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ", iso = DateTimeFormat.ISO.DATE_TIME)
-    @Column(name = "time_last_update")
-    private ZonedDateTime timeLastUpdate;
-    @Column(name = "reservation_parking_space_id")
-    private Long reservationParkingSpaceId;
+    @Column(name = "time_from")
+    private ZonedDateTime timeFrom;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ", iso = DateTimeFormat.ISO.DATE_TIME)
+    @Column(name = "time_to")
+    private ZonedDateTime timeTo;
+
 }

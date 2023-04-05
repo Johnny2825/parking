@@ -4,17 +4,15 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-
-
 /**
  * @author Tarkhov Evgeniy
  */
 @Data
 @Builder
-public class ParkingSpaceDto {
+public class ParkingDto {
     @EqualsAndHashCode.Exclude
     private Long id;
-    private Long parkingId;
-    private String placeCode;
-    private Long userId;
+    private String name;
+    private String address;
+    private Integer parkingSpaceAmount;
 }

@@ -4,16 +4,16 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="init-parking-space" author="etarkhov">
+    <changeSet id="init-reservation-parking-space" author="etarkhov">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="parking_space"/>
+                <tableExists tableName="reservation_parking_space"/>
             </not>
         </preConditions>
 
-        <createTable tableName="parking_space">
+        <createTable tableName="reservation_parking_space">
             <column name="id" remarks="Первичный ключ" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
+                <constraints primaryKey="true"  nullable="false"/>
             </column>
             <column name="parking_id" remarks="Идентификатор парковки" type="bigint">
                 <constraints nullable="false"/>
@@ -24,11 +24,17 @@
             <column name="place" remarks="Место" type="smallint">
                 <constraints nullable="false"/>
             </column>
-            <column name="user_id" remarks="Идентификатор пользователя" type="bigint"/>
-            <column name="time_last_update" remarks="Время последнего обновления состояния" type="datetime"/>
-            <column name="reservation_parking_space_id" remarks="Идентификатор брони" type="bigint"/>
+            <column name="user_id" remarks="Идентификатор пользователя" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time_from" remarks="Время начала брони" type="datetime">
+                <constraints nullable="false"/>
+            </column>
+            <column name="time_to" remarks="Время окончания брони" type="datetime">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
-        <createSequence sequenceName="parking_space_id_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="reservation_parking_space_id_seq" startValue="1" incrementBy="1"/>
     </changeSet>
 
 </databaseChangeLog>

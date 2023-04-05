@@ -4,31 +4,28 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
 
-    <changeSet id="init-user" author="etarkhov">
+    <changeSet id="init-parking" author="etarkhov">
         <preConditions onFail="MARK_RAN">
             <not>
-                <tableExists tableName="u_user"/>
+                <tableExists tableName="parking"/>
             </not>
         </preConditions>
 
-        <createTable tableName="u_user">
+        <createTable tableName="parking">
             <column name="id" remarks="Первичный ключ" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="first_name" remarks="Имя пользователя" type="varchar(32)">
+            <column name="name" remarks="Наименование" type="varchar(128)">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_name" remarks="Фамилия пользователя" type="varchar(32)">
+            <column name="address" remarks="Адрес" type="varchar(512)">
                 <constraints nullable="false"/>
             </column>
-            <column name="email" remarks="Email пользователя" type="varchar(64)">
-                <constraints nullable="false"/>
-            </column>
-            <column name="active" remarks="Активный аккаунт" type="boolean">
+            <column name="parking_space_amount" remarks="Общее количество парковочных мест" type="integer">
                 <constraints nullable="false"/>
             </column>
         </createTable>
-        <createSequence sequenceName="u_user_id_seq" startValue="1" incrementBy="1"/>
+        <createSequence sequenceName="parking_id_seq" startValue="1" incrementBy="1"/>
     </changeSet>
 
 </databaseChangeLog>

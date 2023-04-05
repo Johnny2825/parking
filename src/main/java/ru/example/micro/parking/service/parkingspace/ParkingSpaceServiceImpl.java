@@ -1,4 +1,4 @@
-package ru.example.micro.parking.service.parkingplace;
+package ru.example.micro.parking.service.parkingspace;
 
 import com.querydsl.core.types.Predicate;
 import lombok.RequiredArgsConstructor;
@@ -7,7 +7,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.example.micro.parking.controller.dto.ParkingSpaceDto;
-import ru.example.micro.parking.mapper.ParkingPlaceMapper;
+import ru.example.micro.parking.mapper.ParkingSpaceMapper;
 import ru.example.micro.parking.repository.ParkingPlaceRepository;
 
 import java.util.List;
@@ -17,16 +17,16 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
-public class ParkingPlaceServiceImpl implements ParkingPlaceService {
+public class ParkingSpaceServiceImpl implements ParkingSpaceService {
 
     private final ParkingPlaceRepository parkingPlaceRepository;
-    private final ParkingPlaceMapper parkingPlaceMapper;
+    private final ParkingSpaceMapper parkingSpaceMapper;
 
     @Override
     public Page<ParkingSpaceDto> getAllParkingSpace(Predicate predicate, Pageable pageable) {
         List<ParkingSpaceDto> parkingSpaceList = parkingPlaceRepository.findAll(predicate, pageable)
                 .stream()
-                .map(parkingPlaceMapper::map)
+                .map(parkingSpaceMapper::map)
                 .toList();
         return new PageImpl<>(parkingSpaceList, pageable, parkingSpaceList.size());
     }

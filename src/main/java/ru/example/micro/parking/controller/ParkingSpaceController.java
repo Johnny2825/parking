@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.example.micro.parking.controller.dto.ParkingSpaceDto;
 import ru.example.micro.parking.entity.ParkingSpaceEntity;
-import ru.example.micro.parking.service.parkingplace.ParkingPlaceService;
+import ru.example.micro.parking.service.parkingspace.ParkingSpaceService;
 
 /**
  * @author Tarkhov Evgeniy
@@ -19,12 +19,25 @@ import ru.example.micro.parking.service.parkingplace.ParkingPlaceService;
 @RequiredArgsConstructor
 public class ParkingSpaceController {
 
-    private final ParkingPlaceService parkingPlaceService;
+    private final ParkingSpaceService parkingSpaceService;
 
     @GetMapping("/parking-space")
     public Page<ParkingSpaceDto> findAll(@QuerydslPredicate(root = ParkingSpaceEntity.class) Predicate predicate,
                                          @PageableDefault(value = 20) Pageable pageable) {
-        return parkingPlaceService.getAllParkingSpace(predicate, pageable);
+        return parkingSpaceService.getAllParkingSpace(predicate, pageable);
     }
+
+
+//    @GetMapping("/parking-space/level/{id}")
+//    public Page<ParkingSpaceDto> findAllByLevel(@QuerydslPredicate(root = ParkingSpaceEntity.class) Predicate predicate,
+//                                         @PageableDefault(value = 20) Pageable pageable) {
+//        return parkingSpaceService.getAllParkingSpace(predicate, pageable);
+//    }
+//
+//    @GetMapping("/parking-space")
+//    public Page<ParkingSpaceDto> findAllFree(@QuerydslPredicate(root = ParkingSpaceEntity.class) Predicate predicate,
+//                                         @PageableDefault(value = 20) Pageable pageable) {
+//        return parkingSpaceService.getAllParkingSpace(predicate, pageable);
+//    }
 
 }
