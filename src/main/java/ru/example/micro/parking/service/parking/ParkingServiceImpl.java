@@ -7,11 +7,14 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ru.example.micro.parking.controller.dto.ParkingDto;
+import ru.example.micro.parking.entity.QParkingEntity;
 import ru.example.micro.parking.mapper.ParkingMapper;
 import ru.example.micro.parking.repository.ParkingRepository;
 
 import java.util.List;
 import java.util.Optional;
+
+import static java.util.Objects.isNull;
 
 /**
  * @author Tarkhov Evgeniy
@@ -33,7 +36,12 @@ public class ParkingServiceImpl implements ParkingService {
     }
 
     @Override
-    public Optional<ParkingDto> findParkingById(Predicate predicate) {
+    public Optional<ParkingDto> findParkingById(Long parkingId) {
+        if (isNull(parkingId)) {
+            return Optional.empty();
+        }
+        QParkingEntity qParkingEntity = QParkingEntity.parkingEntity;
+        Predicate predicate = qParkingEntity.id.eq(parkingId);
         return parkingRepository.findOne(predicate).map(parkingMapper::map);
     }
 }

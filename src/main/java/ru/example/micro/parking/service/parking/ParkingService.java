@@ -14,5 +14,5 @@ public interface ParkingService {
 
     Page<ParkingDto> getAllParking(Predicate predicate, Pageable pageable);
 
-    Optional<ParkingDto> findParkingById(Predicate predicate);
+    Optional<ParkingDto> findParkingById(Long parkingId);
 }

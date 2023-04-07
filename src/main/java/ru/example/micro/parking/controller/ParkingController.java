@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 import ru.example.micro.parking.controller.dto.ParkingDto;
 import ru.example.micro.parking.entity.ParkingEntity;
@@ -28,12 +29,10 @@ public class ParkingController {
     }
 
 
-    @GetMapping("/parking/id")
-    public ResponseEntity<ParkingDto> findParkingById(@QuerydslPredicate(root = ParkingEntity.class) Predicate predicate) {
-        return parkingService.findParkingById(predicate)
+    @GetMapping("/parking/{parkingId}")
+    public ResponseEntity<ParkingDto> findParkingById(@PathVariable("parkingId") Long parkingId) {
+        return parkingService.findParkingById(parkingId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.noContent().build());
     }
-
-    //TODO посмотреть как разрулить end point с предикатом
 }

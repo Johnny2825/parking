@@ -17,4 +17,5 @@ public class ParkingSpaceDto {
     private Long parkingId;
     private String placeCode;
     private Long userId;
+    private Integer minutes;
 }
