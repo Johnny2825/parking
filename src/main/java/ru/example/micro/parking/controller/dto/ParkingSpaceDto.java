@@ -5,7 +5,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 
-
 /**
  * @author Tarkhov Evgeniy
  */
@@ -16,6 +15,5 @@ public class ParkingSpaceDto {
     private Long id;
     private Long parkingId;
     private String placeCode;
-    private Long userId;
-    private Integer minutes;
+    private Boolean isEmpty;
 }

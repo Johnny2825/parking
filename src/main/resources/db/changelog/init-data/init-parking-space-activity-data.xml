@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="init-parking-space-activity-data" author="etarkhov">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="parking_space_activity"/>
+        </preConditions>
+        <insert tableName="parking_space_activity">
+            <column name="id" valueSequenceNext="parking_space_activity_id_seq"/>
+            <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'ТЦ Мега' LIMIT 1)"/>
+            <column name="level" value="1"/>
+            <column name="space" value="1"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

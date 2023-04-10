@@ -14,5 +14,5 @@ public class ParkingDto {
     private Long id;
     private String name;
     private String address;
-    private Integer parkingSpaceAmount;
-}
+    private Integer levelTotalAmount;
+    private Integer parkingSpaceTotalAmount;}

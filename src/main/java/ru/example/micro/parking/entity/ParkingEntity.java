@@ -33,6 +33,8 @@ public class ParkingEntity {
     private String name;
     @Column(name = "address")
     private String address;
-    @Column(name = "parking_space_amount")
-    private Integer parkingSpaceAmount;
+    @Column(name = "level_total_amount")
+    private Integer levelTotalAmount;
+    @Column(name = "parking_space_total_amount")
+    private Integer parkingSpaceTotalAmount;
 }

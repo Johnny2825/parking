@@ -21,12 +21,9 @@
             <column name="level" remarks="Этаж" type="smallint">
                 <constraints nullable="false"/>
             </column>
-            <column name="place" remarks="Место" type="smallint">
+            <column name="space" remarks="Место" type="smallint">
                 <constraints nullable="false"/>
             </column>
-            <column name="user_id" remarks="Идентификатор пользователя" type="bigint"/>
-            <column name="time_last_update" remarks="Время последнего обновления состояния" type="datetime"/>
-            <column name="reservation_parking_space_id" remarks="Идентификатор брони" type="bigint"/>
         </createTable>
         <createSequence sequenceName="parking_space_id_seq" startValue="1" incrementBy="1"/>
     </changeSet>

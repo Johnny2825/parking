@@ -22,8 +22,7 @@ public class ParkingSpaceMapperImpl implements ParkingSpaceMapper {
         return ParkingSpaceDto.builder()
                 .id(parkingSpaceEntity.getId())
                 .parkingId(parkingSpaceEntity.getParkingId())
-                .placeCode(String.format(PLACE_CODE_FORMAT, parkingSpaceEntity.getLevel(), parkingSpaceEntity.getPlace()))
-                .userId(parkingSpaceEntity.getUserId())
+                .placeCode(String.format(PLACE_CODE_FORMAT, parkingSpaceEntity.getLevel(), parkingSpaceEntity.getSpace()))
                 .build();
     }
 }

@@ -20,7 +20,8 @@ public class ParkingMapperImpl implements ParkingMapper {
                 .id(parkingEntity.getId())
                 .name(parkingEntity.getName())
                 .address(parkingEntity.getAddress())
-                .parkingSpaceAmount(parkingEntity.getParkingSpaceAmount())
+                .levelTotalAmount(parkingEntity.getLevelTotalAmount())
+                .parkingSpaceTotalAmount(parkingEntity.getParkingSpaceTotalAmount())
                 .build();
     }
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="init-parking-data" author="etarkhov">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="parking"/>
+        </preConditions>
+        <insert tableName="parking">
+            <column name="id" valueSequenceNext="parking_id_seq"/>
+            <column name="name" value="ТЦ Мега"/>
+            <column name="address" value="Москва"/>
+            <column name="level_total_amount" value="1"/>
+            <column name="parking_space_total_amount" value="10"/>
+        </insert>
+        <insert tableName="parking">
+            <column name="id" valueSequenceNext="parking_id_seq"/>
+            <column name="name" value="БЦ Платина"/>
+            <column name="address" value="Самара"/>
+            <column name="level_total_amount" value="2"/>
+            <column name="parking_space_total_amount" value="5"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

@@ -12,9 +12,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.ZonedDateTime;
 
 /**
  * @author Tarkhov Evgeniy
@@ -36,13 +33,6 @@ public class ParkingSpaceEntity {
     private Long parkingId;
     @Column(name = "level")
     private Integer level;
-    @Column(name = "place")
-    private Integer place;
-    @Column(name = "user_id")
-    private Long userId;
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ", iso = DateTimeFormat.ISO.DATE_TIME)
-    @Column(name = "time_last_update")
-    private ZonedDateTime timeLastUpdate;
-    @Column(name = "reservation_parking_space_id")
-    private Long reservationParkingSpaceId;
+    @Column(name = "space")
+    private Integer space;
 }
