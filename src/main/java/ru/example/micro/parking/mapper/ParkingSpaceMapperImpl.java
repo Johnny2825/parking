@@ -10,7 +10,9 @@ import static java.util.Objects.isNull;
  * @author Tarkhov Evgeniy
  */
 @Component
-public class ParkingPlaceMapperImpl implements ParkingPlaceMapper {
+public class ParkingSpaceMapperImpl implements ParkingSpaceMapper {
+
+    private static final String PLACE_CODE_FORMAT = "%d-%d";
 
     @Override
     public ParkingSpaceDto map(ParkingSpaceEntity parkingSpaceEntity) {
@@ -19,8 +21,10 @@ public class ParkingPlaceMapperImpl implements ParkingPlaceMapper {
         }
         return ParkingSpaceDto.builder()
                 .id(parkingSpaceEntity.getId())
-                .code(parkingSpaceEntity.getCode())
-                .status(parkingSpaceEntity.getStatus())
+                .parkingId(parkingSpaceEntity.getParkingId())
+                .placeCode(String.format(PLACE_CODE_FORMAT, parkingSpaceEntity.getLevel(), parkingSpaceEntity.getSpace()))
+                .isEmpty(isNull(parkingSpaceEntity.getUserId()))
+                .userId(parkingSpaceEntity.getUserId())
                 .build();
     }
 }

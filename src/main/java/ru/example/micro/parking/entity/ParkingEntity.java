@@ -19,24 +19,22 @@ import lombok.NoArgsConstructor;
 @Data
 @Builder
 @Entity
-@Table(name = "u_user")
+@Table(name = "parking")
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserEntity {
+public class ParkingEntity {
     @EqualsAndHashCode.Exclude
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "u_user_id_seq")
-    @SequenceGenerator(name="u_user_id_seq", sequenceName = "u_user_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "parking_id_seq")
+    @SequenceGenerator(name="parking_id_seq", sequenceName = "parking_id_seq", allocationSize = 1)
     @Column(name = "id")
     private Long id;
-    @Column(name = "first_name")
-    private String firstName;
-    @Column(name = "last_name")
-    private String lastName;
-    @Column(name = "email")
-    private String email;
-    @Column(name = "parking_space_id")
-    private Long parkingSpaceId;
-    @Column(name = "active")
-    private Boolean active;
+    @Column(name = "name")
+    private String name;
+    @Column(name = "address")
+    private String address;
+    @Column(name = "level_total_amount")
+    private Integer levelTotalAmount;
+    @Column(name = "parking_space_total_amount")
+    private Integer parkingSpaceTotalAmount;
 }

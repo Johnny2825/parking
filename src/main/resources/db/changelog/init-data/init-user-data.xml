@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd">
+
+    <changeSet id="init-user-data" author="etarkhov">
+        <preConditions onFail="MARK_RAN">
+            <tableExists tableName="u_user"/>
+        </preConditions>
+        <insert tableName="u_user">
+            <column name="id" valueSequenceNext="u_user_id_seq"/>
+            <column name="first_name" value="Bob"/>
+            <column name="last_name" value="Smith"/>
+            <column name="email" value="bob@mail.com"/>
+            <column name="active" value="true"/>
+        </insert>
+        <insert tableName="u_user">
+            <column name="id" valueSequenceNext="u_user_id_seq"/>
+            <column name="first_name" value="Ron"/>
+            <column name="last_name" value="Cook"/>
+            <column name="email" value="ron@mail.com"/>
+            <column name="active" value="true"/>
+        </insert>
+        <insert tableName="u_user">
+            <column name="id" valueSequenceNext="u_user_id_seq"/>
+            <column name="first_name" value="Carl"/>
+            <column name="last_name" value="Jones"/>
+            <column name="email" value="carl@mail.com"/>
+            <column name="active" value="false"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog>

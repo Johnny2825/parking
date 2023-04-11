@@ -12,19 +12,21 @@
         </preConditions>
 
         <createTable tableName="u_user">
-            <column name="id" type="bigint">
+            <column name="id" remarks="Первичный ключ" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="first_name" type="varchar(32)">
+            <column name="first_name" remarks="Имя пользователя" type="varchar(32)">
                 <constraints nullable="false"/>
             </column>
-            <column name="last_name" type="varchar(32)">
+            <column name="last_name" remarks="Фамилия пользователя" type="varchar(32)">
                 <constraints nullable="false"/>
             </column>
-            <column name="email" type="varchar(64)">
+            <column name="email" remarks="Email пользователя" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
-            <column name="active" type="boolean">
+            <column name="parking_space_id" remarks="Идентификатор парковочного места" type="bigint">
+            </column>
+            <column name="active" remarks="Активный аккаунт" type="boolean">
                 <constraints nullable="false"/>
             </column>
         </createTable>

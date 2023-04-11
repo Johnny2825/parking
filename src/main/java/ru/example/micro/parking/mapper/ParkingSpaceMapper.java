@@ -7,7 +7,7 @@ import ru.example.micro.parking.entity.ParkingSpaceEntity;
 /**
  * @author Tarkhov Evgeniy
  */
-public interface ParkingPlaceMapper {
+public interface ParkingSpaceMapper {
 
     ParkingSpaceDto map(ParkingSpaceEntity parkingSpaceEntityOptional);
 }

@@ -1,26 +1,23 @@
 package ru.example.micro.parking.controller.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
-
+import java.time.ZonedDateTime;
 
 /**
  * @author Tarkhov Evgeniy
  */
 @Data
 @Builder
-@JsonIgnoreProperties(ignoreUnknown = true)
-public class ParkingSpaceDto {
+public class UserHistoryDto {
     @EqualsAndHashCode.Exclude
     private Long id;
-    private Long parkingId;
-    private String placeCode;
-    private Boolean isEmpty;
+    private Long parkingSpaceId;
     private Long userId;
-    private Long minutes;
+    private ZonedDateTime timeFrom;
+    private ZonedDateTime timeTo;
     private BigDecimal payment;
 }

@@ -22,6 +22,7 @@ public class UserMapperImpl implements UserMapper {
                 .firstName(userEntity.getFirstName())
                 .lastName(userEntity.getLastName())
                 .email(userEntity.getEmail())
+                .parkingSpaceId(userEntity.getParkingSpaceId())
                 .build();
     }
 
