@@ -24,6 +24,8 @@
             <column name="space" remarks="Место" type="smallint">
                 <constraints nullable="false"/>
             </column>
+            <column name="user_id" remarks="Идентификатор пользователя" type="bigint"/>
+            <column name="last_update" remarks="Время последнего обновления состояния" type="datetime"/>
         </createTable>
         <createSequence sequenceName="parking_space_id_seq" startValue="1" incrementBy="1"/>
     </changeSet>

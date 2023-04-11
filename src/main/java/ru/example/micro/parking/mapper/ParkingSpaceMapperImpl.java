@@ -23,6 +23,8 @@ public class ParkingSpaceMapperImpl implements ParkingSpaceMapper {
                 .id(parkingSpaceEntity.getId())
                 .parkingId(parkingSpaceEntity.getParkingId())
                 .placeCode(String.format(PLACE_CODE_FORMAT, parkingSpaceEntity.getLevel(), parkingSpaceEntity.getSpace()))
+                .isEmpty(isNull(parkingSpaceEntity.getUserId()))
+                .userId(parkingSpaceEntity.getUserId())
                 .build();
     }
 }

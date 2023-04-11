@@ -9,6 +9,7 @@ import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,10 +32,23 @@ public class ParkingSpaceController {
         return parkingSpaceService.getAllParkingSpace(predicate, pageable);
     }
 
+    @GetMapping("/parking-space/byuser/{userId}")
+    public ResponseEntity<ParkingSpaceDto> findParkingSpaceByUserId(@PathVariable Long userId) {
+        return parkingSpaceService.getParkingSpaceByUserId(userId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.internalServerError().build());
+    }
 
-    @PostMapping("/parking-space/byparking")
-    public ResponseEntity<ParkingSpaceDto> takeParkingSpace(@Valid @RequestBody ParkingSpaceDto parkingSpaceDto) {
-        return parkingSpaceService.takeParkingSpace(parkingSpaceDto)
+    @PostMapping("/parking-space/start-parking")
+    public ResponseEntity<ParkingSpaceDto> startParking(@Valid @RequestBody ParkingSpaceDto parkingSpaceDto) {
+        return parkingSpaceService.startParking(parkingSpaceDto)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.internalServerError().build());
+    }
+
+    @PostMapping("/parking-space/finish-parking")
+    public ResponseEntity<ParkingSpaceDto> finishParking(@Valid @RequestBody ParkingSpaceDto parkingSpaceDto) {
+        return parkingSpaceService.finishParking(parkingSpaceDto)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.internalServerError().build());
     }
@@ -42,5 +56,6 @@ public class ParkingSpaceController {
     //TODO ключевые точки это:
     // 1) получение всех свободных мест
     // 2) получение всех свободных мест по уровню
+    // 3) получение места по пользователю
 
 }

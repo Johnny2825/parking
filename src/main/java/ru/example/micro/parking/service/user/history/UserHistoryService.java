@@ -2,16 +2,15 @@ package ru.example.micro.parking.service.user.history;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.lang.NonNull;
 import ru.example.micro.parking.controller.dto.UserHistoryDto;
-
-import java.util.Optional;
 
 /**
  * @author Tarkhov Evgeniy
  */
 public interface UserHistoryService {
 
-    Page<UserHistoryDto> findAllByUserId(Long userId, Pageable pageable);
+    Page<UserHistoryDto> findAllByUserId(@NonNull Long userId, @NonNull Pageable pageable);
 
-    Optional<UserHistoryDto> addUserHistory(UserHistoryDto userHistoryNew);
+   void addUserHistory(@NonNull UserHistoryDto userHistoryNew);
 }

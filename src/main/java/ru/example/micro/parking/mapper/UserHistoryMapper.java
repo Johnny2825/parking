@@ -9,4 +9,6 @@ import ru.example.micro.parking.entity.UserHistoryEntity;
 public interface UserHistoryMapper {
 
     UserHistoryDto map(UserHistoryEntity userHistoryEntity);
+
+    UserHistoryEntity map(UserHistoryDto userHistoryDto);
 }

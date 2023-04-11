@@ -25,4 +25,18 @@ public class UserHistoryMapperImpl implements UserHistoryMapper {
                 .payment(userHistoryEntity.getPayment())
                 .build();
     }
+
+    @Override
+    public UserHistoryEntity map(UserHistoryDto userHistoryDto) {
+        if (isNull(userHistoryDto)) {
+            return null;
+        }
+        return UserHistoryEntity.builder()
+                .parkingSpaceId(userHistoryDto.getParkingSpaceId())
+                .userId(userHistoryDto.getUserId())
+                .timeFrom(userHistoryDto.getTimeFrom())
+                .timeTo(userHistoryDto.getTimeTo())
+                .payment(userHistoryDto.getPayment())
+                .build();
+    }
 }
