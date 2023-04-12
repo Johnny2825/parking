@@ -1,5 +1,6 @@
 package ru.example.micro.parking.service.user;
 
+import lombok.NonNull;
 import ru.example.micro.parking.controller.dto.UserDto;
 
 import java.util.Optional;
@@ -9,12 +10,12 @@ import java.util.Optional;
  */
 public interface UserService {
 
-    Optional<UserDto> findUserById(Long userId);
+    Optional<UserDto> findUserById(@NonNull Long userId);
 
-    Optional<UserDto> createUser(UserDto userDto);
+    Optional<UserDto> createUser(@NonNull UserDto userDto);
 
-    Optional<UserDto> updateUser(Long userId, UserDto userDto);
+    Optional<UserDto> updateUser(@NonNull Long userId, UserDto userDto);
 
-    Optional<UserDto> deleteUser(Long userId);
+    Optional<UserDto> deleteUser(@NonNull Long userId);
 
 }

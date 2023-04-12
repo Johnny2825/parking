@@ -1,5 +1,6 @@
 package ru.example.micro.parking.service.user;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,8 +10,6 @@ import ru.example.micro.parking.mapper.UserMapper;
 import ru.example.micro.parking.repository.UserRepository;
 
 import java.util.Optional;
-
-import static java.util.Objects.isNull;
 
 /**
  * @author Tarkhov Evgeniy
@@ -23,30 +22,22 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public Optional<UserDto> findUserById(Long userId) {
-        if (isNull(userId)) {
-            return Optional.empty();
-        }
+    public Optional<UserDto> findUserById(@NonNull final Long userId) {
         return userRepository.findById(userId).map(userMapper::map);
     }
 
     @Override
-    public Optional<UserDto> createUser(UserDto userDto) {
-        if (isNull(userDto)) {
-            return Optional.empty();
-        }
+    public Optional<UserDto> createUser(@NonNull final UserDto userDto) {
         UserEntity userEntityForCreate = userMapper.map(userDto);
-        userEntityForCreate.setActive(true);
+        userEntityForCreate.setActive();
         UserEntity userEntityCreated = userRepository.save(userEntityForCreate);
         return Optional.of(userMapper.map(userEntityCreated));
     }
 
     @Override
     @Transactional
-    public Optional<UserDto> updateUser(Long userId, UserDto userDto) {
-        if (isNull(userId) || isNull(userDto)) {
-            return Optional.empty();
-        }
+    public Optional<UserDto> updateUser(@NonNull final Long userId,
+                                        @NonNull final UserDto userDto) {
         Optional<UserEntity> userEntityOptional = userRepository.findById(userId);
         if (userEntityOptional.isPresent()) {
             UserEntity userEntity = userEntityOptional.get();
@@ -60,12 +51,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public Optional<UserDto> deleteUser(Long userId) {
-        if (isNull(userId)) {
-            return Optional.empty();
-        }
+    public Optional<UserDto> deleteUser(@NonNull final Long userId) {
         Optional<UserEntity> userEntityOptional = userRepository.findById(userId);
-        userEntityOptional.ifPresent(userEntity -> userEntity.setActive(false));
+        userEntityOptional.ifPresent(UserEntity::softDeleted);
         return userEntityOptional.map(userMapper::map);
     }
 }

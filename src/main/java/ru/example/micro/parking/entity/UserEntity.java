@@ -7,11 +7,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.hibernate.annotations.Where;
 
 /**
  * @author Tarkhov Evgeniy
@@ -22,6 +25,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "u_user")
 @NoArgsConstructor
 @AllArgsConstructor
+@Where(clause = "active = true")
 public class UserEntity {
     @EqualsAndHashCode.Exclude
     @Id
@@ -38,5 +42,14 @@ public class UserEntity {
     @Column(name = "parking_space_id")
     private Long parkingSpaceId;
     @Column(name = "active")
+    @Setter(AccessLevel.NONE)
     private Boolean active;
+
+    public void setActive() {
+        this.active = true;
+    }
+
+    public void softDeleted() {
+        this.active = false;
+    }
 }
