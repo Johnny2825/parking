@@ -39,8 +39,6 @@ public class UserEntity {
     private String lastName;
     @Column(name = "email")
     private String email;
-    @Column(name = "parking_space_id")
-    private Long parkingSpaceId;
     @Column(name = "active")
     @Setter(AccessLevel.NONE)
     private Boolean active;
