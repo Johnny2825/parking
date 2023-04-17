@@ -466,6 +466,21 @@
 										},
 										{
 											"_type": "ERDColumnView",
+											"_id": "AAAAAAGHkC7+t0gpsrc=",
+											"_parent": {
+												"$ref": "AAAAAAGHi6pcTwSecLk="
+											},
+											"model": {
+												"$ref": "AAAAAAGHkC7+rUgmc70="
+											},
+											"font": "Arial;13;0",
+											"left": 253,
+											"top": 353,
+											"width": 103.80810546875,
+											"height": 13
+										},
+										{
+											"_type": "ERDColumnView",
 											"_id": "AAAAAAGHi6rC3ATAf+s=",
 											"_parent": {
 												"$ref": "AAAAAAGHi6pcTwSecLk="
@@ -475,7 +490,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 253,
-											"top": 353,
+											"top": 368,
 											"width": 103.80810546875,
 											"height": 13
 										},
@@ -490,7 +505,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 253,
-											"top": 368,
+											"top": 383,
 											"width": 103.80810546875,
 											"height": 13
 										}
@@ -499,14 +514,14 @@
 									"left": 248,
 									"top": 303,
 									"width": 113.80810546875,
-									"height": 83
+									"height": 98
 								}
 							],
 							"font": "Arial;13;0",
 							"left": 248,
 							"top": 280,
 							"width": 113.80810546875,
-							"height": 106,
+							"height": 121,
 							"nameLabel": {
 								"$ref": "AAAAAAGHi6pcTwSd9FU="
 							},
@@ -1000,7 +1015,7 @@
 									},
 									"font": "Arial;13;0",
 									"left": 327,
-									"top": 404,
+									"top": 419,
 									"height": 13,
 									"alpha": 0.5235987755982988,
 									"distance": 30,
@@ -1034,7 +1049,7 @@
 								"$ref": "AAAAAAGHi6pcTgSc6H4="
 							},
 							"lineStyle": 2,
-							"points": "312:385;312:560;432:560",
+							"points": "312:400;312:560;432:560",
 							"nameLabel": {
 								"$ref": "AAAAAAGHi7F88QWnQ1w="
 							},
@@ -1657,6 +1672,15 @@
 								"$ref": "AAAAAAGHi6pcTgSaiO8="
 							},
 							"name": "last_name",
+							"length": 0
+						},
+						{
+							"_type": "ERDColumn",
+							"_id": "AAAAAAGHkC7+rUgmc70=",
+							"_parent": {
+								"$ref": "AAAAAAGHi6pcTgSaiO8="
+							},
+							"name": "phone",
 							"length": 0
 						},
 						{

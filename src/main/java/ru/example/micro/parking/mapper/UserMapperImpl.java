@@ -21,6 +21,7 @@ public class UserMapperImpl implements UserMapper {
                 .id(userEntity.getId())
                 .firstName(userEntity.getFirstName())
                 .lastName(userEntity.getLastName())
+                .phone(userEntity.getPhone())
                 .email(userEntity.getEmail())
                 .build();
     }
@@ -34,6 +35,7 @@ public class UserMapperImpl implements UserMapper {
                 .id(userDto.getId())
                 .firstName(userDto.getFirstName())
                 .lastName(userDto.getLastName())
+                .phone(userDto.getPhone())
                 .email(userDto.getEmail())
                 .build();
     }

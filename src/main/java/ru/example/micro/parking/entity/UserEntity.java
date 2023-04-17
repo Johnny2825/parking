@@ -37,6 +37,8 @@ public class UserEntity {
     private String firstName;
     @Column(name = "last_name")
     private String lastName;
+    @Column(name = "phone")
+    private String phone;
     @Column(name = "email")
     private String email;
     @Column(name = "active")

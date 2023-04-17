@@ -21,6 +21,9 @@
             <column name="last_name" remarks="Фамилия пользователя" type="varchar(32)">
                 <constraints nullable="false"/>
             </column>
+            <column name="phone" remarks="Номер телефона" type="varchar(20)">
+                <constraints nullable="false"/>
+            </column>
             <column name="email" remarks="Email пользователя" type="varchar(64)">
                 <constraints nullable="false"/>
             </column>
