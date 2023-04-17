@@ -12,3 +12,14 @@ spring:
     show-sql: true
   liquibase:
     change-log: classpath:db/changelog-master.yaml
+  cloud:
+    function:
+      definition: producer
+    stream:
+      kafka:
+        binder:
+          brokers: localhost:9092
+      bindings:
+        mail-topic-out-0:
+          destination: mail-topic-event
+

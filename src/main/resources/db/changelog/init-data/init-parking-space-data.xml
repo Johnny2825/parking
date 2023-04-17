@@ -11,60 +11,70 @@
         <insert tableName="parking_space">
             <column name="id" valueSequenceNext="parking_space_id_seq"/>
             <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'ТЦ Мега' LIMIT 1)"/>
+            <column name="reservation_available" value="false"/>
             <column name="level" value="1"/>
             <column name="space" value="1"/>
         </insert>
         <insert tableName="parking_space">
             <column name="id" valueSequenceNext="parking_space_id_seq"/>
             <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'ТЦ Мега' LIMIT 1)"/>
+            <column name="reservation_available" value="false"/>
             <column name="level" value="1"/>
             <column name="space" value="2"/>
         </insert>
         <insert tableName="parking_space">
             <column name="id" valueSequenceNext="parking_space_id_seq"/>
             <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'ТЦ Мега' LIMIT 1)"/>
+            <column name="reservation_available" value="false"/>
             <column name="level" value="1"/>
             <column name="space" value="3"/>
         </insert>
         <insert tableName="parking_space">
             <column name="id" valueSequenceNext="parking_space_id_seq"/>
             <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'ТЦ Мега' LIMIT 1)"/>
+            <column name="reservation_available" value="false"/>
             <column name="level" value="1"/>
             <column name="space" value="4"/>
         </insert>
         <insert tableName="parking_space">
             <column name="id" valueSequenceNext="parking_space_id_seq"/>
             <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'ТЦ Мега' LIMIT 1)"/>
+            <column name="reservation_available" value="false"/>
             <column name="level" value="1"/>
             <column name="space" value="5"/>
         </insert>
         <insert tableName="parking_space">
             <column name="id" valueSequenceNext="parking_space_id_seq"/>
             <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'ТЦ Мега' LIMIT 1)"/>
+            <column name="reservation_available" value="false"/>
             <column name="level" value="1"/>
             <column name="space" value="6"/>
         </insert>
         <insert tableName="parking_space">
             <column name="id" valueSequenceNext="parking_space_id_seq"/>
             <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'ТЦ Мега' LIMIT 1)"/>
+            <column name="reservation_available" value="false"/>
             <column name="level" value="1"/>
             <column name="space" value="7"/>
         </insert>
         <insert tableName="parking_space">
             <column name="id" valueSequenceNext="parking_space_id_seq"/>
             <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'ТЦ Мега' LIMIT 1)"/>
+            <column name="reservation_available" value="true"/>
             <column name="level" value="1"/>
             <column name="space" value="8"/>
         </insert>
         <insert tableName="parking_space">
             <column name="id" valueSequenceNext="parking_space_id_seq"/>
             <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'ТЦ Мега' LIMIT 1)"/>
+            <column name="reservation_available" value="true"/>
             <column name="level" value="1"/>
             <column name="space" value="9"/>
         </insert>
         <insert tableName="parking_space">
             <column name="id" valueSequenceNext="parking_space_id_seq"/>
             <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'ТЦ Мега' LIMIT 1)"/>
+            <column name="reservation_available" value="true"/>
             <column name="level" value="1"/>
             <column name="space" value="10"/>
         </insert>
@@ -72,60 +82,70 @@
         <insert tableName="parking_space">
             <column name="id" valueSequenceNext="parking_space_id_seq"/>
             <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'БЦ Платина' LIMIT 1)"/>
+            <column name="reservation_available" value="true"/>
             <column name="level" value="1"/>
             <column name="space" value="1"/>
         </insert>
         <insert tableName="parking_space">
             <column name="id" valueSequenceNext="parking_space_id_seq"/>
             <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'БЦ Платина' LIMIT 1)"/>
+            <column name="reservation_available" value="true"/>
             <column name="level" value="1"/>
             <column name="space" value="2"/>
         </insert>
         <insert tableName="parking_space">
             <column name="id" valueSequenceNext="parking_space_id_seq"/>
             <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'БЦ Платина' LIMIT 1)"/>
+            <column name="reservation_available" value="true"/>
             <column name="level" value="1"/>
             <column name="space" value="3"/>
         </insert>
         <insert tableName="parking_space">
             <column name="id" valueSequenceNext="parking_space_id_seq"/>
             <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'БЦ Платина' LIMIT 1)"/>
+            <column name="reservation_available" value="true"/>
             <column name="level" value="1"/>
             <column name="space" value="4"/>
         </insert>
         <insert tableName="parking_space">
             <column name="id" valueSequenceNext="parking_space_id_seq"/>
             <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'БЦ Платина' LIMIT 1)"/>
+            <column name="reservation_available" value="true"/>
             <column name="level" value="1"/>
             <column name="space" value="5"/>
         </insert>
         <insert tableName="parking_space">
             <column name="id" valueSequenceNext="parking_space_id_seq"/>
             <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'БЦ Платина' LIMIT 1)"/>
+            <column name="reservation_available" value="false"/>
             <column name="level" value="2"/>
             <column name="space" value="1"/>
         </insert>
         <insert tableName="parking_space">
             <column name="id" valueSequenceNext="parking_space_id_seq"/>
             <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'БЦ Платина' LIMIT 1)"/>
+            <column name="reservation_available" value="false"/>
             <column name="level" value="2"/>
             <column name="space" value="2"/>
         </insert>
         <insert tableName="parking_space">
             <column name="id" valueSequenceNext="parking_space_id_seq"/>
             <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'БЦ Платина' LIMIT 1)"/>
+            <column name="reservation_available" value="false"/>
             <column name="level" value="2"/>
             <column name="space" value="3"/>
         </insert>
         <insert tableName="parking_space">
             <column name="id" valueSequenceNext="parking_space_id_seq"/>
             <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'БЦ Платина' LIMIT 1)"/>
+            <column name="reservation_available" value="false"/>
             <column name="level" value="2"/>
             <column name="space" value="4"/>
         </insert>
         <insert tableName="parking_space">
             <column name="id" valueSequenceNext="parking_space_id_seq"/>
             <column name="parking_id" valueComputed="(SELECT id FROM parking WHERE name LIKE 'БЦ Платина' LIMIT 1)"/>
+            <column name="reservation_available" value="false"/>
             <column name="level" value="2"/>
             <column name="space" value="5"/>
         </insert>

@@ -16,12 +16,13 @@ import ru.example.micro.parking.exception.ParkingSpaceIsNotEmpty;
 import ru.example.micro.parking.exception.ParkingSpaceNotFoundException;
 import ru.example.micro.parking.mapper.ParkingSpaceMapper;
 import ru.example.micro.parking.repository.ParkingSpaceRepository;
+import ru.example.micro.parking.service.notification.mail.MailService;
 import ru.example.micro.parking.service.payment.PaymentService;
 import ru.example.micro.parking.service.user.history.UserHistoryService;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -39,33 +40,39 @@ public class ParkingSpaceServiceImpl implements ParkingSpaceService {
     private final ParkingSpaceMapper parkingSpaceMapper;
     private final UserHistoryService userHistoryService;
     private final PaymentService paymentService;
+    private final MailService mailService;
 
     @Override
-    public Page<ParkingSpaceDto> getAllParkingSpace(final Predicate predicate, final Pageable pageable) {
+    public Page<ParkingSpaceDto> findAllParkingSpace(final Predicate predicate, final Pageable pageable) {
         List<ParkingSpaceDto> parkingSpaceList = parkingSpaceRepository.findAll(predicate, pageable).stream().map(parkingSpaceMapper::map).toList();
         return new PageImpl<>(parkingSpaceList, pageable, parkingSpaceList.size());
     }
 
     @Override
-    public Optional<ParkingSpaceDto> getParkingSpaceByUserId(@NonNull final Long userId) {
-        QParkingSpaceEntity qParking = QParkingSpaceEntity.parkingSpaceEntity;
-        Predicate predicate = qParking.userId.eq(userId);
-        Optional<ParkingSpaceEntity> parkingSpaceEntityOptional = parkingSpaceRepository.findOne(predicate);
-        if (parkingSpaceEntityOptional.isPresent()) {
-            ParkingSpaceEntity entity = parkingSpaceEntityOptional.get();
-            Long minutes = calcMinutes(entity.getLastUpdate(), ZonedDateTime.now());
-            ParkingSpaceDto parkingSpaceDto = parkingSpaceMapper.map(entity);
-            parkingSpaceDto.setMinutes(minutes);
-            parkingSpaceDto.setPayment(paymentService.calculatePaymentByMinutes(minutes));
-            return Optional.of(parkingSpaceDto);
-        }
-        return Optional.empty();
+    public Optional<ParkingSpaceDto> findParkingSpaceById(@NonNull final Long parkingSpaceId, @NonNull final Boolean reservationAvailable) {
+        Predicate predicate = QParkingSpaceEntity.parkingSpaceEntity.id.eq(parkingSpaceId)
+                .and(QParkingSpaceEntity.parkingSpaceEntity.reservationAvailable.eq(reservationAvailable));
+       return parkingSpaceRepository.findOne(predicate).map(parkingSpaceMapper::map);
+    }
+
+    @Override
+    public Optional<ParkingSpaceDto> findParkingSpaceByUserId(@NonNull final Long userId) {
+        Predicate predicate = QParkingSpaceEntity.parkingSpaceEntity.userId.eq(userId);
+        return parkingSpaceRepository.findOne(predicate).map(parkingSpaceEntity -> {
+            Long minutes = calcMinutes(parkingSpaceEntity.getLastUpdate(), LocalDateTime.now());
+            ParkingSpaceDto retVal = parkingSpaceMapper.map(parkingSpaceEntity);
+            retVal.setMinutes(minutes);
+            retVal.setPayment(paymentService.calculatePaymentByMinutes(minutes));
+            return retVal;
+        });
     }
 
     @Override
     @Transactional
     public Optional<ParkingSpaceDto> startParking(@NonNull final ParkingSpaceDto parkingSpaceDto) {
         //TODO а нужна ли проверка на наличие пользователя??
+        //TODO сообщение о начале парковки
+        //TODO проверка, что это парковка без брони
         Optional<ParkingSpaceEntity> parkingSpaceEntityOptional = parkingSpaceRepository.findById(parkingSpaceDto.getId());
         parkingSpaceEntityOptional.ifPresentOrElse(parkingSpaceEntity -> {
             if (nonNull(parkingSpaceEntity.getUserId())
@@ -76,7 +83,7 @@ public class ParkingSpaceServiceImpl implements ParkingSpaceService {
                                 parkingSpaceEntity.getUserId()));
             }
             parkingSpaceEntity.setUserId(parkingSpaceDto.getUserId());
-            parkingSpaceEntity.setLastUpdate(ZonedDateTime.now());
+            parkingSpaceEntity.setLastUpdate(LocalDateTime.now());
         }, () -> {
             throw new ParkingSpaceNotFoundException("Не найдено парковочное место с идентификатором " + parkingSpaceDto.getId());
         });
@@ -87,6 +94,7 @@ public class ParkingSpaceServiceImpl implements ParkingSpaceService {
     @Override
     @Transactional
     public Optional<ParkingSpaceDto> finishParking(@NonNull final ParkingSpaceDto parkingSpaceDto) {
+        //TODO сообщение о конце парковки
         Optional<ParkingSpaceEntity> parkingSpaceEntityOptional = parkingSpaceRepository
                 .findByIdAndUserId(parkingSpaceDto.getId(), parkingSpaceDto.getUserId());
         parkingSpaceEntityOptional.ifPresentOrElse(parkingSpaceEntity -> updateParkingSpaceData(parkingSpaceDto, parkingSpaceEntity),
@@ -102,8 +110,8 @@ public class ParkingSpaceServiceImpl implements ParkingSpaceService {
 
     private void updateParkingSpaceData(@NonNull final ParkingSpaceDto parkingSpaceDto,
                                         @NonNull final ParkingSpaceEntity parkingSpaceEntity) {
-        ZonedDateTime timeFrom = parkingSpaceEntity.getLastUpdate();
-        ZonedDateTime timeTo = ZonedDateTime.now();
+        LocalDateTime timeFrom = parkingSpaceEntity.getLastUpdate();
+        LocalDateTime timeTo = LocalDateTime.now();
         parkingSpaceEntity.setUserId(null);
         parkingSpaceEntity.setLastUpdate(timeTo);
 
@@ -114,15 +122,14 @@ public class ParkingSpaceServiceImpl implements ParkingSpaceService {
         addUserHistory(parkingSpaceDto, timeFrom, timeTo, payment);
     }
 
-    private Long calcMinutes(@NonNull final ZonedDateTime timeFrom,
-                             @NonNull final ZonedDateTime timeTo) {
+    private Long calcMinutes(@NonNull final LocalDateTime timeFrom, @NonNull final LocalDateTime timeTo) {
         Duration duration = Duration.between(timeFrom, timeTo);
         return duration.toMinutes();
     }
 
     private void addUserHistory(@NonNull final ParkingSpaceDto parkingSpaceDto,
-                                @NonNull final ZonedDateTime timeFrom,
-                                @NonNull final ZonedDateTime timeTo,
+                                @NonNull final LocalDateTime timeFrom,
+                                @NonNull final LocalDateTime timeTo,
                                 @NonNull final BigDecimal payment) {
         userHistoryService.addUserHistory(UserHistoryDto.builder()
                 .parkingSpaceId(parkingSpaceDto.getId())

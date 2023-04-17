@@ -32,7 +32,7 @@ public class TariffEntity {
     @Column(name = "id")
     private Long id;
     @Column(name = "minutes_amount")
-    private Long minutesAmount;
+    private Integer minutesAmount;
     @Column(name = "payment")
     private BigDecimal payment;
 }

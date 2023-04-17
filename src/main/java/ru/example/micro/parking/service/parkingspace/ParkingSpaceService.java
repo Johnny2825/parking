@@ -13,14 +13,16 @@ import java.util.Optional;
  */
 public interface ParkingSpaceService {
 
-    Page<ParkingSpaceDto> getAllParkingSpace(Predicate predicate, Pageable pageable);
+    Page<ParkingSpaceDto> findAllParkingSpace(Predicate predicate, Pageable pageable);
 
     /**
      * Получение текучщего паркового места по идентификатору пользователя
      * @param userId идентификатор пользователя
      * @return парковочное место
      */
-    Optional<ParkingSpaceDto> getParkingSpaceByUserId(@NonNull Long userId);
+    Optional<ParkingSpaceDto> findParkingSpaceByUserId(@NonNull Long userId);
+
+    Optional<ParkingSpaceDto> findParkingSpaceById(@NonNull Long parkingSpaceId, @NonNull Boolean reservationAvailable);
 
     Optional<ParkingSpaceDto> startParking(@NonNull ParkingSpaceDto parkingSpaceDto);
 

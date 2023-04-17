@@ -21,10 +21,11 @@
             <column name="last_name" remarks="Фамилия пользователя" type="varchar(32)">
                 <constraints nullable="false"/>
             </column>
-            <column name="email" remarks="Email пользователя" type="varchar(64)">
+            <column name="phone" remarks="Номер телефона" type="varchar(20)">
                 <constraints nullable="false"/>
             </column>
-            <column name="parking_space_id" remarks="Идентификатор парковочного места" type="bigint">
+            <column name="email" remarks="Email пользователя" type="varchar(64)">
+                <constraints nullable="false"/>
             </column>
             <column name="active" remarks="Активный аккаунт" type="boolean">
                 <constraints nullable="false"/>

@@ -8,5 +8,5 @@ import ru.example.micro.parking.entity.TariffEntity;
  * @author Tarkhov Evgeniy
  */
 @Repository
-public interface PaymentRepository extends CrudRepository<TariffEntity, Long> {
+public interface TariffRepository extends CrudRepository<TariffEntity, Long> {
 }
