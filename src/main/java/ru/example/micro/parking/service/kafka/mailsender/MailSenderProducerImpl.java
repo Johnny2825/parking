@@ -1,8 +1,7 @@
 package ru.example.micro.parking.service.kafka.mailsender;
 
 import lombok.RequiredArgsConstructor;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
@@ -11,15 +10,15 @@ import ru.example.micro.parking.model.MailMessageDto;
 
 import java.util.UUID;
 
-import static ru.example.micro.parking.model.Constant.MESSAGE_GUID_HEADER;
+import static ru.example.micro.parking.model.Constant.Kafka.MESSAGE_GUID_HEADER;
 
 /**
  * @author Tarkhov Evgeniy
  */
 @Component
+@Log4j2
 @RequiredArgsConstructor
 public class MailSenderProducerImpl implements MailSenderProducer {
-    private static final Logger LOGGER = LogManager.getLogger(MailSenderProducerImpl.class);
 
     private final StreamBridge streamBridge;
 
@@ -28,8 +27,10 @@ public class MailSenderProducerImpl implements MailSenderProducer {
         try {
             Message<MailMessageDto> message = buildMessage(mailMessageDto);
             streamBridge.send("mail-topic-out-0", message);
-        } catch (Exception exception) {
-            LOGGER.error("sendMessage() Произошла ошибка во время отправки сообщения. Error: {}", exception.getMessage());
+        } catch (Exception e) {
+            log.error("Произошла ошибка во время отправки сообщения. Error: {}. Объект для отправки: {}",
+                    e.getMessage(),
+                    mailMessageDto);
         }
     }
 

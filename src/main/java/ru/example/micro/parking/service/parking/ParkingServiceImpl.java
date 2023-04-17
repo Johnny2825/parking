@@ -40,8 +40,7 @@ public class ParkingServiceImpl implements ParkingService {
         if (isNull(parkingId)) {
             return Optional.empty();
         }
-        QParkingEntity qParkingEntity = QParkingEntity.parkingEntity;
-        Predicate predicate = qParkingEntity.id.eq(parkingId);
+        Predicate predicate = QParkingEntity.parkingEntity.id.eq(parkingId);
         return parkingRepository.findOne(predicate).map(parkingMapper::map);
     }
 }

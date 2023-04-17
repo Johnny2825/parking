@@ -26,15 +26,15 @@ public class ParkingSpaceController {
 
     private final ParkingSpaceService parkingSpaceService;
 
-    @GetMapping("/parking-space/byparking")
+    @GetMapping("/parking-space")
     public Page<ParkingSpaceDto> findAll(@QuerydslPredicate(root = ParkingSpaceEntity.class) Predicate predicate,
                                          @PageableDefault(value = 20) Pageable pageable) {
-        return parkingSpaceService.getAllParkingSpace(predicate, pageable);
+        return parkingSpaceService.findAllParkingSpace(predicate, pageable);
     }
 
     @GetMapping("/parking-space/byuser/{userId}")
     public ResponseEntity<ParkingSpaceDto> findParkingSpaceByUserId(@PathVariable Long userId) {
-        return parkingSpaceService.getParkingSpaceByUserId(userId)
+        return parkingSpaceService.findParkingSpaceByUserId(userId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.internalServerError().build());
     }

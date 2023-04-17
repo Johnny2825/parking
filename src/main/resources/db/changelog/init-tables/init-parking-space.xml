@@ -18,6 +18,9 @@
             <column name="parking_id" remarks="Идентификатор парковки" type="bigint">
                 <constraints nullable="false"/>
             </column>
+            <column name="reservation_available" remarks="Доступно для бронирования" type="boolean">
+                <constraints nullable="false"/>
+            </column>
             <column name="level" remarks="Этаж" type="smallint">
                 <constraints nullable="false"/>
             </column>

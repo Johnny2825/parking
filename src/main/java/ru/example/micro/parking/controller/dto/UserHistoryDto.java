@@ -3,9 +3,10 @@ package ru.example.micro.parking.controller.dto;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 /**
  * @author Tarkhov Evgeniy
@@ -17,7 +18,9 @@ public class UserHistoryDto {
     private Long id;
     private Long parkingSpaceId;
     private Long userId;
-    private ZonedDateTime timeFrom;
-    private ZonedDateTime timeTo;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm", iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime timeFrom;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm", iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime timeTo;
     private BigDecimal payment;
 }

@@ -25,7 +25,7 @@ public class UserController {
     public ResponseEntity<UserDto> findUserById(@PathVariable("userId") Long userId) {
         return userService.findUserById(userId)
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.noContent().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/users")
@@ -40,13 +40,13 @@ public class UserController {
                                               @RequestBody UserDto userDto) {
         return userService.updateUser(userId, userDto)
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.noContent().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/users/{userId}")
     public ResponseEntity<UserDto> deleteUser(@PathVariable("userId") Long userId) {
         return userService.deleteUser(userId)
                 .map(ResponseEntity::ok)
-                .orElseGet(() -> ResponseEntity.noContent().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

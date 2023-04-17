@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 /**
  * @author Tarkhov Evgeniy
@@ -37,12 +37,12 @@ public class UserHistoryEntity {
     private Long parkingSpaceId;
     @Column(name = "user_id")
     private Long userId;
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ", iso = DateTimeFormat.ISO.DATE_TIME)
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm", iso = DateTimeFormat.ISO.DATE_TIME)
     @Column(name = "time_from")
-    private ZonedDateTime timeFrom;
-    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ", iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime timeFrom;
+    @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm", iso = DateTimeFormat.ISO.DATE_TIME)
     @Column(name = "time_to")
-    private ZonedDateTime timeTo;
+    private LocalDateTime timeTo;
     @Column(name = "payment")
     private BigDecimal payment;
 }
