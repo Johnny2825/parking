@@ -2,6 +2,7 @@ package ru.example.micro.parking.service.parkingspace.reservation;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -12,8 +13,9 @@ import ru.example.micro.parking.controller.dto.ParkingSpaceDto;
 import ru.example.micro.parking.controller.dto.ParkingSpaceReservationDto;
 import ru.example.micro.parking.controller.dto.UserDto;
 import ru.example.micro.parking.entity.ParkingSpaceReservationEntity;
-import ru.example.micro.parking.exception.TimeException;
 import ru.example.micro.parking.exception.ParkingSpaceNotFoundException;
+import ru.example.micro.parking.exception.TimeException;
+import ru.example.micro.parking.exception.UserMismatchException;
 import ru.example.micro.parking.exception.UserNotFoundException;
 import ru.example.micro.parking.mapper.ParkingSpaceReservationMapper;
 import ru.example.micro.parking.repository.ParkingSpaceReservationRepository;
@@ -23,9 +25,9 @@ import ru.example.micro.parking.service.user.UserService;
 
 import java.time.Duration;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
+import static org.apache.commons.lang3.ObjectUtils.notEqual;
 import static ru.example.micro.parking.model.Constant.EmailMessageTemplate.USER_CREATE_RESERVATION;
 import static ru.example.micro.parking.model.Constant.EmailMessageTemplate.USER_DELETE_RESERVATION;
 import static ru.example.micro.parking.model.Constant.EmailMessageTemplate.USER_UPDATED_RESERVATION;
@@ -56,9 +58,10 @@ public class ParkingSpaceReservationServiceImpl implements ParkingSpaceReservati
     }
 
     @Override
-    public Page<ParkingSpaceReservationDto> findAllReservationByParkingId(Long parkingId) {
+    public Page<ParkingSpaceReservationDto> findAllReservationByParkingId(@NonNull final Long parkingId,
+                                                                          @NonNull final Pageable pageable) {
         List<ParkingSpaceReservationDto> parkingSpaceReservationDtoList = parkingSpaceReservationRepository
-                .findAllByParkingId(parkingId)
+                .findAllByParkingId(parkingId)  //TODO переделать запрос для работы с page
                 .stream()
                 .map(parkingSpaceReservationMapper::map)
                 .toList();
@@ -72,30 +75,31 @@ public class ParkingSpaceReservationServiceImpl implements ParkingSpaceReservati
 
     @Override
     public Optional<ParkingSpaceReservationDto> createReservation(@NonNull final ParkingSpaceReservationDto reservationDto) {
-        UserDto user = checkDateRangeAndUserExist(reservationDto);
-        checkReservationOpportunity(reservationDto);
+
+        UserDto user = userService.findUserById(reservationDto.getUserId())
+                .orElseThrow(() -> new UserNotFoundException(
+                        String.format("Не найден пользователь с идентификатором %s", reservationDto.getUserId())));
+        checkReservationOpportunityForCreate(reservationDto);
         ParkingSpaceReservationEntity entityForCreate = parkingSpaceReservationMapper.map(reservationDto);
         ParkingSpaceReservationEntity entityCreated = parkingSpaceReservationRepository.save(entityForCreate);
         mailService.sendMessage(user, USER_CREATE_RESERVATION);
         return Optional.of(parkingSpaceReservationMapper.map(entityCreated));
     }
 
-    //поработать над обновлением. Проверка, что это тот же пользователь и проверка диапозона дат
     @Override
     @Transactional
     public Optional<ParkingSpaceReservationDto> updateReservation(@NonNull final Long id,
                                                                   @NonNull final ParkingSpaceReservationDto reservationDto) {
-        UserDto user = checkDateRangeAndUserExist(reservationDto);
-        checkReservationOpportunity(reservationDto);
+        UserDto user = userService.findUserById(reservationDto.getUserId())
+                .orElseThrow(() -> new UserNotFoundException(
+                        String.format("Не найден пользователь с идентификатором %s", reservationDto.getUserId())));
         return parkingSpaceReservationRepository.findById(id).map(reservationEntity -> {
-            if (Objects.equals(reservationEntity.getUserId(), user.getId())) {
-                throw new RuntimeException("Другой пользователь");
-            }
+            checkReservationOpportunityForUpdate(reservationDto, reservationEntity);
             reservationEntity.setParkingSpaceId(reservationDto.getParkingSpaceId());
             reservationEntity.setTimeFrom(reservationDto.getTimeFrom());
             reservationEntity.setTimeTo(reservationDto.getTimeTo());
             mailService.sendMessage(user, USER_UPDATED_RESERVATION);
-            return reservationDto;
+            return parkingSpaceReservationMapper.map(reservationEntity);
         });
     }
 
@@ -108,29 +112,65 @@ public class ParkingSpaceReservationServiceImpl implements ParkingSpaceReservati
         });
     }
 
-    private UserDto checkDateRangeAndUserExist(@NonNull final ParkingSpaceReservationDto reservationDto) throws UserNotFoundException {
-        if (Duration.between(reservationDto.getTimeFrom(), reservationDto.getTimeTo()).toMinutes() < 60 ) {
+    /**
+     * Проверяем возможность обновить бронь
+     *
+     * @param reservationDto    входной объект брони
+     * @param reservationEntity существующая бронь
+     * @throws TimeException         исключение в случае пересечения с уже существующими бронями
+     * @throws UserMismatchException исключение в случае несоответствия пользователя создавшего бронь и обновляющего
+     */
+    private void checkReservationOpportunityForUpdate(@NonNull final ParkingSpaceReservationDto reservationDto,
+                                                      @NonNull final ParkingSpaceReservationEntity reservationEntity)
+            throws TimeException, UserMismatchException {
+        if (notEqual(reservationEntity.getUserId(), reservationDto.getUserId())) {
+            throw new UserMismatchException(String.format("Не совпадает id пользователя. Существущий: %s Входной: %s.",
+                    reservationEntity.getUserId(),
+                    reservationDto.getUserId()));
+        }
+        List<ParkingSpaceReservationEntity> reservationList = checkReservationOpportunity(reservationDto);
+        if (reservationList.size() > 1
+                || (reservationList.size() == 1 && notEqual(reservationEntity.getId(), reservationList.get(0).getId()))) {
+            throw new TimeException("Невозможно забронировать на указанное время. Пересечение с другим диапазоном времени");
+        }
+    }
+
+    /**
+     * Проверяем возможность создать бронь
+     *
+     * @param reservationDto входной объект брони
+     * @throws TimeException исключение в случае пересечения с уже существующими бронями
+     */
+    private void checkReservationOpportunityForCreate(@NonNull final ParkingSpaceReservationDto reservationDto) throws TimeException {
+        List<ParkingSpaceReservationEntity> reservationList = checkReservationOpportunity(reservationDto);
+        if (CollectionUtils.isNotEmpty(reservationList)) {
+            throw new TimeException("Невозможно забронировать на указанное время. Пересечение с другим диапазоном времени");
+        }
+    }
+
+    /**
+     * Получение броней пересекающихся с переданным диапозоном
+     *
+     * @param reservationDto входной объект брони
+     * @return список существующих броней пересекающихся с переданным диапозоном
+     * @throws ParkingSpaceNotFoundException исключение в случае если не найдено доступное для бронирования парковочное место по идентификатору
+     * @throws TimeException                 исключение в случае если время начала брони больше времени окончания брони
+     */
+    private List<ParkingSpaceReservationEntity> checkReservationOpportunity(@NonNull final ParkingSpaceReservationDto reservationDto)
+            throws ParkingSpaceNotFoundException, TimeException {
+        if (Duration.between(reservationDto.getTimeFrom(), reservationDto.getTimeTo()).toMinutes() < 60) {
             throw new TimeException(String.format("Время между началом брони %s и окончанием %s не может быть меньше часа",
                     reservationDto.getTimeFrom(),
                     reservationDto.getTimeTo()));
         }
-        return userService.findUserById(reservationDto.getUserId())
-                .orElseThrow(() -> new UserNotFoundException(String.format("Не найден пользователь с идентификатором %s", reservationDto.getUserId())));
-    }
-
-    private void checkReservationOpportunity(@NonNull final ParkingSpaceReservationDto reservationDto) throws ParkingSpaceNotFoundException, TimeException {
-        Optional<ParkingSpaceDto> parkingSpaceOptional = parkingSpaceService.findParkingSpaceById(reservationDto.getParkingSpaceId(), true);
+        Optional<ParkingSpaceDto> parkingSpaceOptional = parkingSpaceService
+                .findParkingSpaceById(reservationDto.getParkingSpaceId(), true);
         if (parkingSpaceOptional.isEmpty()) {
             throw new ParkingSpaceNotFoundException(
-                    String.format("Не найдено парковочное место с идентификатором %s", reservationDto.getParkingSpaceId()));
+                    String.format("Не найдено парковочное место доступное для бронирования с идентификатором %s", reservationDto.getParkingSpaceId()));
         }
-        Optional<ParkingSpaceReservationEntity> parkingSpaceReservationOptional = parkingSpaceReservationRepository
-                .findByParkingSpaceIdAndTimeRange(reservationDto.getParkingSpaceId(),
-                        reservationDto.getTimeFrom(),
-                        reservationDto.getTimeTo());
-        if (parkingSpaceReservationOptional.isPresent()) {
-            throw new TimeException(
-                    String.format("Невозможно забронировать на указанное время. Пересечение с другим диапазоном времени"));
-        }
+        return parkingSpaceReservationRepository.findByParkingSpaceIdAndTimeRange(reservationDto.getParkingSpaceId(),
+                reservationDto.getTimeFrom(),
+                reservationDto.getTimeTo());
     }
 }
