@@ -53,9 +53,4 @@ public class ParkingSpaceController {
                 .orElseGet(() -> ResponseEntity.internalServerError().build());
     }
 
-    //TODO ключевые точки это:
-    // 1) получение всех свободных мест
-    // 2) получение всех свободных мест по уровню
-    // 3) получение места по пользователю
-
 }

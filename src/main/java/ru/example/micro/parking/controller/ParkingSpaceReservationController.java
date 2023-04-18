@@ -1,5 +1,6 @@
 package ru.example.micro.parking.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,14 +27,14 @@ public class ParkingSpaceReservationController {
 
     @GetMapping("/reservation/byuser/{userId}")
     public Page<ParkingSpaceReservationDto> findAllByUserId(@PathVariable("userId") Long userId,
-//                                                @QuerydslPredicate(root = ParkingEntity.class) Predicate predicate,
                                                             Pageable pageable) {
         return parkingSpaceReservationService.findAllReservationByUserId(userId, pageable);
     }
 
     @GetMapping("/reservation/byparking/{parkingId}")
-    public Page<ParkingSpaceReservationDto> findAllByParkingId(@PathVariable("parkingId") Long parkingId) {
-        return parkingSpaceReservationService.findAllReservationByParkingId(parkingId);
+    public Page<ParkingSpaceReservationDto> findAllByParkingId(@PathVariable("parkingId") Long parkingId,
+                                                               Pageable pageable) {
+        return parkingSpaceReservationService.findAllReservationByParkingId(parkingId, pageable);
     }
 
     @GetMapping("/reservation/{id}")
@@ -44,7 +45,7 @@ public class ParkingSpaceReservationController {
     }
 
     @PostMapping("/reservation")
-    public ResponseEntity<ParkingSpaceReservationDto> createReservation(@RequestBody ParkingSpaceReservationDto parkingSpaceReservationDto) {
+    public ResponseEntity<ParkingSpaceReservationDto> createReservation(@Valid @RequestBody ParkingSpaceReservationDto parkingSpaceReservationDto) {
         return parkingSpaceReservationService.createReservation(parkingSpaceReservationDto)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.noContent().build());
@@ -52,7 +53,7 @@ public class ParkingSpaceReservationController {
 
     @PutMapping("/reservation/{id}")
     public ResponseEntity<ParkingSpaceReservationDto> updateReservation(@PathVariable("id") Long id,
-                                                                        @RequestBody ParkingSpaceReservationDto parkingSpaceReservationDto) {
+                                                                        @Valid @RequestBody ParkingSpaceReservationDto parkingSpaceReservationDto) {
         return parkingSpaceReservationService.updateReservation(id, parkingSpaceReservationDto)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

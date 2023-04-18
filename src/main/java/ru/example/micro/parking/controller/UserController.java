@@ -1,5 +1,6 @@
 package ru.example.micro.parking.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,7 +30,7 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto) {
+    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
         return userService.createUser(userDto)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.noContent().build());
@@ -37,7 +38,7 @@ public class UserController {
 
     @PutMapping("/users/{userId}")
     public ResponseEntity<UserDto> updateUser(@PathVariable("userId") Long userId,
-                                              @RequestBody UserDto userDto) {
+                                              @Valid @RequestBody UserDto userDto) {
         return userService.updateUser(userId, userDto)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

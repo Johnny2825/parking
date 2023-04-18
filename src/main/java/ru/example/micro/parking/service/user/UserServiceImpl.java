@@ -21,6 +21,8 @@ import static ru.example.micro.parking.model.Constant.EmailMessageTemplate.USER_
 import static ru.example.micro.parking.model.Constant.EmailMessageTemplate.USER_UPDATED;
 
 /**
+ *  Сервис по работе с пользователями
+ *
  * @author Tarkhov Evgeniy
  */
 @Service
@@ -54,7 +56,7 @@ public class UserServiceImpl implements UserService {
             checkUserByEmail(userDto);
             userEntity.setFirstName(userDto.getFirstName());
             userEntity.setLastName(userDto.getLastName());
-            userEntity.setEmail(userDto.getEmail());
+            userEntity.setEmail(userDto.getEmail());    //TODO отдельная логика при обновление email
             UserDto retVal = userMapper.map(userEntity);
             mailService.sendMessage(retVal, USER_UPDATED);
             return retVal;
@@ -64,7 +66,7 @@ public class UserServiceImpl implements UserService {
     /**
      * Проверка существования пользователя по email
      * @param userDto объект пользователя
-     * @throws UserExistException исключение если пользователь существует
+     * @throws UserExistException если пользователь с переданным email уже существует
      */
     private void checkUserByEmail(@NonNull final UserDto userDto) throws UserExistException {
         Predicate predicate = QUserEntity.userEntity.email.eq(userDto.getEmail());

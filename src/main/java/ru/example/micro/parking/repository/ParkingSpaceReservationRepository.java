@@ -10,7 +10,7 @@ import ru.example.micro.parking.entity.ParkingSpaceReservationEntity;
 
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Optional;
+import java.util.List;
 
 /**
  * @author Tarkhov Evgeniy
@@ -29,9 +29,11 @@ public interface ParkingSpaceReservationRepository extends JpaRepository<Parking
 
     @Query(value = "FROM ParkingSpaceReservationEntity res " +
             "WHERE res.parkingSpaceId = :parkingSpaceId " +
-            "AND :timeFrom BETWEEN res.timeFrom AND res.timeTo " +
-            "OR :timeTo BETWEEN res.timeFrom AND res.timeTo")
-    Optional<ParkingSpaceReservationEntity> findByParkingSpaceIdAndTimeRange(@Param("parkingSpaceId") Long parkingSpaceId,
-                                                               @Param("timeFrom") LocalDateTime timeFrom,
-                                                               @Param("timeTo") LocalDateTime timeTo);
+            "AND (:timeFrom < res.timeFrom AND res.timeFrom < :timeTo) " +
+            "OR (:timeFrom < res.timeTo AND res.timeTo < :timeTo) " +
+            "OR (res.timeFrom < :timeFrom AND :timeFrom < res.timeTo) " +
+            "OR (res.timeFrom < :timeTo AND :timeTo < res.timeTo)")
+    List<ParkingSpaceReservationEntity> findByParkingSpaceIdAndTimeRange(@Param("parkingSpaceId") Long parkingSpaceId,
+                                                                         @Param("timeFrom") LocalDateTime timeFrom,
+                                                                         @Param("timeTo") LocalDateTime timeTo);
 }
