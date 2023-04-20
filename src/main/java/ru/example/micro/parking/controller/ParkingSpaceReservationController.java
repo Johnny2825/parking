@@ -1,10 +1,12 @@
 package ru.example.micro.parking.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +20,7 @@ import ru.example.micro.parking.service.parkingspace.reservation.ParkingSpaceRes
 /**
  * @author Tarkhov Evgeniy
  */
+@Validated
 @RestController
 @RequiredArgsConstructor
 public class ParkingSpaceReservationController {
@@ -26,19 +29,19 @@ public class ParkingSpaceReservationController {
 
 
     @GetMapping("/reservation/byuser/{userId}")
-    public Page<ParkingSpaceReservationDto> findAllByUserId(@PathVariable("userId") Long userId,
+    public Page<ParkingSpaceReservationDto> findAllByUserId(@PathVariable("userId") @Positive Long userId,
                                                             Pageable pageable) {
         return parkingSpaceReservationService.findAllReservationByUserId(userId, pageable);
     }
 
     @GetMapping("/reservation/byparking/{parkingId}")
-    public Page<ParkingSpaceReservationDto> findAllByParkingId(@PathVariable("parkingId") Long parkingId,
+    public Page<ParkingSpaceReservationDto> findAllByParkingId(@PathVariable("parkingId") @Positive Long parkingId,
                                                                Pageable pageable) {
         return parkingSpaceReservationService.findAllReservationByParkingId(parkingId, pageable);
     }
 
     @GetMapping("/reservation/{id}")
-    public ResponseEntity<ParkingSpaceReservationDto> findById(@PathVariable("id") Long id) {
+    public ResponseEntity<ParkingSpaceReservationDto> findById(@PathVariable("id") @Positive Long id) {
         return parkingSpaceReservationService.findReservationById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -52,7 +55,7 @@ public class ParkingSpaceReservationController {
     }
 
     @PutMapping("/reservation/{id}")
-    public ResponseEntity<ParkingSpaceReservationDto> updateReservation(@PathVariable("id") Long id,
+    public ResponseEntity<ParkingSpaceReservationDto> updateReservation(@PathVariable("id") @Positive Long id,
                                                                         @Valid @RequestBody ParkingSpaceReservationDto parkingSpaceReservationDto) {
         return parkingSpaceReservationService.updateReservation(id, parkingSpaceReservationDto)
                 .map(ResponseEntity::ok)
@@ -60,7 +63,7 @@ public class ParkingSpaceReservationController {
     }
 
     @DeleteMapping("/reservation/{id}")
-    public ResponseEntity<ParkingSpaceReservationDto> deleteReservation(@PathVariable("id") Long id) {
+    public ResponseEntity<ParkingSpaceReservationDto> deleteReservation(@PathVariable("id") @Positive Long id) {
         parkingSpaceReservationService.deleteReservation(id);
         return ResponseEntity.noContent().build();
     }

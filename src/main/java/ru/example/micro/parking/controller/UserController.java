@@ -1,8 +1,10 @@
 package ru.example.micro.parking.controller;
 
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +18,7 @@ import ru.example.micro.parking.service.user.UserService;
 /**
  * @author Tarkhov Evgeniy
  */
+@Validated
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -23,7 +26,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/users/{userId}")
-    public ResponseEntity<UserDto> findUserById(@PathVariable("userId") Long userId) {
+    public ResponseEntity<UserDto> findUserById(@PathVariable("userId") @Positive Long userId) {
         return userService.findUserById(userId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
@@ -37,7 +40,7 @@ public class UserController {
     }
 
     @PutMapping("/users/{userId}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("userId") Long userId,
+    public ResponseEntity<UserDto> updateUser(@PathVariable("userId") @Positive Long userId,
                                               @Valid @RequestBody UserDto userDto) {
         return userService.updateUser(userId, userDto)
                 .map(ResponseEntity::ok)
@@ -45,7 +48,7 @@ public class UserController {
     }
 
     @DeleteMapping("/users/{userId}")
-    public ResponseEntity<UserDto> deleteUser(@PathVariable("userId") Long userId) {
+    public ResponseEntity<UserDto> deleteUser(@PathVariable("userId") @Positive Long userId) {
         return userService.deleteUser(userId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

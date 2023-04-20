@@ -1,11 +1,15 @@
 package ru.example.micro.parking.model;
 
+import java.time.format.DateTimeFormatter;
+
 /**
  * @author Tarkhov Evgeniy
  */
 public class Constant {
 
     private Constant(){}
+
+    public static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm dd-MM-yyyy");
 
     public static class Kafka {
 
@@ -17,16 +21,16 @@ public class Constant {
     public static class EmailMessageTemplate {
         private EmailMessageTemplate(){}
 
-        public static final String USER_CREATE = "create";
-        public static final String USER_UPDATED = "upd";
-        public static final String USER_DELETED = "del";
+        public static final String USER_CREATE = "Здравствуйте, %s! Вы зарегистровались";
+        public static final String USER_UPDATED = "Здравствуйте, %s! Был изменен Ваш профиль.";
+        public static final String USER_DELETED = "Здравствуйте, %s! Ваш профиль был удалён.";
 
-        public static final String USER_CREATE_RESERVATION = "create";
-        public static final String USER_UPDATED_RESERVATION = "update";
-        public static final String USER_DELETE_RESERVATION = "delete";
+        public static final String USER_CREATE_RESERVATION = "Здравствуйте, %s! Вы создали бронь №%s на парковочное место %s на период %s - %s";
+        public static final String USER_UPDATED_RESERVATION = "Здравствуйте, %s! Вы изменили бронь №%s на парковочное место %s на период %s - %s";
+        public static final String USER_DELETE_RESERVATION = "Здравствуйте, %s! Вы удалили бронь №%s на парковочное место %s с %s по %s";
 
-        public static final String USER_START_PARKING = "start";
-        public static final String USER_FINISH_PARKING = "finish";
+        public static final String USER_START_PARKING = "Здравствуйте, %s! Вы заняли парковочное место %s в %s";
+        public static final String USER_FINISH_PARKING = "Здравствуйте, %s! Вы освободили парковочное место %s в %s";
     }
 
 

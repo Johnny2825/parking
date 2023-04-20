@@ -8,7 +8,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import ru.example.micro.parking.controller.dto.ParkingSpaceDto;
 import ru.example.micro.parking.controller.dto.ParkingSpaceReservationDto;
 import ru.example.micro.parking.controller.dto.UserDto;
@@ -22,15 +21,16 @@ import ru.example.micro.parking.repository.ParkingSpaceReservationRepository;
 import ru.example.micro.parking.service.notification.mail.MailService;
 import ru.example.micro.parking.service.parkingspace.ParkingSpaceService;
 import ru.example.micro.parking.service.user.UserService;
+import ru.example.micro.parking.utils.DateTimeConverter;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Optional;
 
 import static org.apache.commons.lang3.ObjectUtils.notEqual;
-import static ru.example.micro.parking.model.Constant.EmailMessageTemplate.USER_CREATE_RESERVATION;
-import static ru.example.micro.parking.model.Constant.EmailMessageTemplate.USER_DELETE_RESERVATION;
-import static ru.example.micro.parking.model.Constant.EmailMessageTemplate.USER_UPDATED_RESERVATION;
+import static ru.example.micro.parking.utils.MessageBuilderUtils.messageUserCreateReservation;
+import static ru.example.micro.parking.utils.MessageBuilderUtils.messageUserDeleteReservation;
+import static ru.example.micro.parking.utils.MessageBuilderUtils.messageUserUpdateReservation;
 
 /**
  * @author Tarkhov Evgeniy
@@ -75,39 +75,55 @@ public class ParkingSpaceReservationServiceImpl implements ParkingSpaceReservati
 
     @Override
     public Optional<ParkingSpaceReservationDto> createReservation(@NonNull final ParkingSpaceReservationDto reservationDto) {
-
         UserDto user = userService.findUserById(reservationDto.getUserId())
                 .orElseThrow(() -> new UserNotFoundException(
                         String.format("Не найден пользователь с идентификатором %s", reservationDto.getUserId())));
         checkReservationOpportunityForCreate(reservationDto);
         ParkingSpaceReservationEntity entityForCreate = parkingSpaceReservationMapper.map(reservationDto);
         ParkingSpaceReservationEntity entityCreated = parkingSpaceReservationRepository.save(entityForCreate);
-        mailService.sendMessage(user, USER_CREATE_RESERVATION);
+        String message = messageUserCreateReservation(user.getFirstName(),
+                entityCreated.getId(),
+                entityCreated.getParkingSpaceId().toString(),
+                DateTimeConverter.localDateTimeToString(entityCreated.getTimeFrom()),
+                DateTimeConverter.localDateTimeToString(entityCreated.getTimeTo()));
+        mailService.sendMessage(user.getEmail(), message);
         return Optional.of(parkingSpaceReservationMapper.map(entityCreated));
     }
 
     @Override
-    @Transactional
     public Optional<ParkingSpaceReservationDto> updateReservation(@NonNull final Long id,
                                                                   @NonNull final ParkingSpaceReservationDto reservationDto) {
         UserDto user = userService.findUserById(reservationDto.getUserId())
                 .orElseThrow(() -> new UserNotFoundException(
                         String.format("Не найден пользователь с идентификатором %s", reservationDto.getUserId())));
-        return parkingSpaceReservationRepository.findById(id).map(reservationEntity -> {
-            checkReservationOpportunityForUpdate(reservationDto, reservationEntity);
-            reservationEntity.setParkingSpaceId(reservationDto.getParkingSpaceId());
-            reservationEntity.setTimeFrom(reservationDto.getTimeFrom());
-            reservationEntity.setTimeTo(reservationDto.getTimeTo());
-            mailService.sendMessage(user, USER_UPDATED_RESERVATION);
-            return parkingSpaceReservationMapper.map(reservationEntity);
+        return parkingSpaceReservationRepository.findById(id).map(reservation -> {
+            checkReservationOpportunityForUpdate(reservationDto, reservation);
+            reservation.setParkingSpaceId(reservationDto.getParkingSpaceId());
+            reservation.setTimeFrom(reservationDto.getTimeFrom());
+            reservation.setTimeTo(reservationDto.getTimeTo());
+            parkingSpaceReservationRepository.save(reservation);
+            String message = messageUserUpdateReservation(user.getFirstName(),
+                    reservation.getId(),
+                    reservation.getParkingSpaceId().toString(),
+                    DateTimeConverter.localDateTimeToString(reservation.getTimeFrom()),
+                    DateTimeConverter.localDateTimeToString(reservation.getTimeTo()));
+            mailService.sendMessage(user.getEmail(), message);
+            return parkingSpaceReservationMapper.map(reservation);
         });
     }
 
     @Override
     public void deleteReservation(@NonNull final Long id) {
-        parkingSpaceReservationRepository.findById(id).ifPresent(parkingSpaceReservationEntity -> {
-            userService.findUserById(parkingSpaceReservationEntity.getUserId())
-                    .ifPresent(userDto -> mailService.sendMessage(userDto, USER_DELETE_RESERVATION));
+        parkingSpaceReservationRepository.findById(id).ifPresent(reservation -> {
+            userService.findUserById(reservation.getUserId())
+                    .ifPresent(user -> {
+                        String message = messageUserDeleteReservation(user.getFirstName(),
+                                reservation.getId(),
+                                reservation.getParkingSpaceId().toString(),
+                                DateTimeConverter.localDateTimeToString(reservation.getTimeFrom()),
+                                DateTimeConverter.localDateTimeToString(reservation.getTimeTo()));
+                        mailService.sendMessage(user.getEmail(), message);
+                    });
             parkingSpaceReservationRepository.deleteById(id);
         });
     }

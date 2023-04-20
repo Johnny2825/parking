@@ -18,7 +18,15 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public BigDecimal calculatePaymentByMinutes(@Nonnull final Long minutes) {
-        BigDecimal tariff = new BigDecimal(10);
-        return new BigDecimal(minutes).multiply(tariff);
+//        Long localMinutes = minutes;
+//        BigDecimal payment = new BigDecimal(0);
+//        Iterable<TariffEntity> tariffs = tariffRepository.findAll();
+//        for (TariffEntity tariff : tariffs) {
+//            localMinutes = localMinutes - tariff.getMinutesAmount();
+//            if (localMinutes >= 0) {
+//                payment = payment.add(tariff.getPayment());
+//            }
+//        }
+        return new BigDecimal(minutes).multiply(BigDecimal.TEN);
     }
 }

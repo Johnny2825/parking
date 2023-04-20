@@ -15,4 +15,5 @@ public interface ParkingSpaceRepository extends JpaRepository<ParkingSpaceEntity
         QuerydslPredicateExecutor<ParkingSpaceEntity> {
 
     Optional<ParkingSpaceEntity> findByIdAndUserId(Long parkingSpaceId, Long userId);
+
 }
