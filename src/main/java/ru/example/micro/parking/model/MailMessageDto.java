@@ -9,7 +9,6 @@ import lombok.Data;
 @Data
 @Builder
 public class MailMessageDto {
-
     private String address;
     private String message;
 }

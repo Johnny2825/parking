@@ -1,11 +1,13 @@
 package ru.example.micro.parking.controller;
 
 import com.querydsl.core.types.Predicate;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.querydsl.binding.QuerydslPredicate;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +18,7 @@ import ru.example.micro.parking.service.parking.ParkingService;
 /**
  * @author Tarkhov Evgeniy
  */
+@Validated
 @RestController
 @RequiredArgsConstructor
 public class ParkingController {
@@ -30,7 +33,7 @@ public class ParkingController {
 
 
     @GetMapping("/parking/{parkingId}")
-    public ResponseEntity<ParkingDto> findParkingById(@PathVariable("parkingId") Long parkingId) {
+    public ResponseEntity<ParkingDto> findParkingById(@PathVariable("parkingId") @Positive Long parkingId) {
         return parkingService.findParkingById(parkingId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.noContent().build());

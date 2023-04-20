@@ -5,6 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.lang.NonNull;
 import ru.example.micro.parking.controller.dto.ParkingSpaceDto;
+import ru.example.micro.parking.controller.dto.ParkingSpaceUserDto;
 
 import java.util.Optional;
 
@@ -24,8 +25,8 @@ public interface ParkingSpaceService {
 
     Optional<ParkingSpaceDto> findParkingSpaceById(@NonNull Long parkingSpaceId, @NonNull Boolean reservationAvailable);
 
-    Optional<ParkingSpaceDto> startParking(@NonNull ParkingSpaceDto parkingSpaceDto);
+    Optional<ParkingSpaceDto> startParking(@NonNull ParkingSpaceUserDto parkingSpaceUserDto);
 
-    Optional<ParkingSpaceDto> finishParking(@NonNull ParkingSpaceDto parkingSpaceDto);
+    Optional<ParkingSpaceDto> finishParking(@NonNull ParkingSpaceUserDto parkingSpaceUserDto);
 
 }

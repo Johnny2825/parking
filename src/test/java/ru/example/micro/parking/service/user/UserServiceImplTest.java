@@ -1,12 +1,10 @@
 package ru.example.micro.parking.service.user;
 
 import com.querydsl.core.types.Predicate;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import ru.example.micro.parking.controller.dto.UserDto;
 import ru.example.micro.parking.entity.UserEntity;
@@ -20,10 +18,11 @@ import java.util.Optional;
 
 import static java.util.Objects.nonNull;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
@@ -106,7 +105,7 @@ class UserServiceImplTest {
                 .isPresent()
                 .matches(e -> nonNull(e.get().getId()))
                 .matches(e -> Objects.equals(expected, e.get()));
-        Mockito.verify(mailService, times(1)).sendMessage(any(UserDto.class), anyString());
+        verify(mailService, times(1)).sendMessage(any(UserDto.class), anyString());
     }
 
     @Test
@@ -114,7 +113,7 @@ class UserServiceImplTest {
         UserDto userDtoForCreate = userTestData.getUserDtoForCreate();
         when(userRepository.findOne(any(Predicate.class))).thenReturn(Optional.of(userTestData.getUserEntity()));
         assertThrows(UserExistException.class, () -> service.createUser(userDtoForCreate));
-        Mockito.verify(mailService, times(0)).sendMessage(any(UserDto.class), anyString());
+        verify(mailService, times(0)).sendMessage(any(UserDto.class), anyString());
     }
 
     @Test
@@ -141,7 +140,7 @@ class UserServiceImplTest {
                 .isPresent()
                 .matches(e -> nonNull(e.get().getId()))
                 .matches(e -> Objects.equals(expected, e.get()));
-        Mockito.verify(mailService, times(1)).sendMessage(any(UserDto.class), anyString());
+        verify(mailService, times(1)).sendMessage(any(UserDto.class), anyString());
     }
 
     @Test
@@ -164,6 +163,6 @@ class UserServiceImplTest {
         assertThat(result)
                 .isPresent()
                 .matches(e -> Objects.equals(expected, e.get()));
-        Mockito.verify(mailService, times(1)).sendMessage(any(UserDto.class), anyString());
+        verify(mailService, times(1)).sendMessage(any(UserDto.class), anyString());
     }
 }
