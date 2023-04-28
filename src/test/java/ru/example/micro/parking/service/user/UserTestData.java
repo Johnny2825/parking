@@ -1,6 +1,6 @@
 package ru.example.micro.parking.service.user;
 
-import ru.example.micro.parking.controller.dto.UserDto;
+import ru.example.micro.parking.model.dto.UserRequest;
 import ru.example.micro.parking.entity.UserEntity;
 
 /**
@@ -18,8 +18,8 @@ public class UserTestData {
                 .build();
     }
 
-    public UserDto getUserDtoForCreate() {
-        return UserDto.builder()
+    public UserRequest getUserDtoForCreate() {
+        return UserRequest.builder()
                 .firstName("Bob")
                 .lastName("Smith")
                 .phone("435-543-5")
@@ -27,8 +27,8 @@ public class UserTestData {
                 .build();
     }
 
-    public UserDto getUserDto() {
-        return UserDto.builder()
+    public UserRequest getUserDto() {
+        return UserRequest.builder()
                 .id(1L)
                 .firstName("Bob")
                 .lastName("Smith")

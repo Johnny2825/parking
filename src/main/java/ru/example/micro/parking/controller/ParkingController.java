@@ -11,9 +11,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import ru.example.micro.parking.controller.dto.ParkingDto;
 import ru.example.micro.parking.entity.ParkingEntity;
-import ru.example.micro.parking.service.parking.ParkingService;
+import ru.example.micro.parking.model.dto.ParkingResponse;
+import ru.example.micro.parking.service.business.parking.ParkingService;
 
 /**
  * @author Tarkhov Evgeniy
@@ -26,14 +26,16 @@ public class ParkingController {
     private final ParkingService parkingService;
 
     @GetMapping("/parking")
-    public Page<ParkingDto> findAll(@QuerydslPredicate(root = ParkingEntity.class) Predicate predicate,
-                                    Pageable pageable) {
+    public Page<ParkingResponse> findAll(
+            @QuerydslPredicate(root = ParkingEntity.class) Predicate predicate,
+            Pageable pageable
+    ) {
         return parkingService.getAllParking(predicate, pageable);
     }
 
 
     @GetMapping("/parking/{parkingId}")
-    public ResponseEntity<ParkingDto> findParkingById(@PathVariable("parkingId") @Positive Long parkingId) {
+    public ResponseEntity<ParkingResponse> findParkingById(@PathVariable("parkingId") @Positive Long parkingId) {
         return parkingService.findParkingById(parkingId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.noContent().build());

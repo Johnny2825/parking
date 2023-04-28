@@ -1,14 +1,18 @@
 package ru.example.micro.parking.mapper;
 
-import ru.example.micro.parking.controller.dto.UserHistoryDto;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 import ru.example.micro.parking.entity.UserHistoryEntity;
+import ru.example.micro.parking.model.dto.UserHistoryCreate;
+import ru.example.micro.parking.model.dto.UserHistoryResponse;
 
 /**
  * @author Tarkhov Evgeniy
  */
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserHistoryMapper {
 
-    UserHistoryDto map(UserHistoryEntity userHistoryEntity);
+    UserHistoryResponse toResponse(UserHistoryEntity userHistoryEntity);
 
-    UserHistoryEntity map(UserHistoryDto userHistoryDto);
+    UserHistoryEntity toEntity(UserHistoryCreate userHistoryCreate);
 }

@@ -1,6 +1,8 @@
 package ru.example.micro.parking.utils;
 
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+
+import java.util.Optional;
 
 /**
  * @author Tarkhov Evgeniy
@@ -8,14 +10,10 @@ import org.apache.commons.lang3.StringUtils;
 public class TypeCastUtil {
     private TypeCastUtil(){}
 
-    public static Integer castIntegerSafety(String str) {
-        if (StringUtils.isBlank(str)) {
-            return null;
+    public static Optional<Integer> castIntegerSafety(String str) {
+        if (NumberUtils.isDigits(str)) {
+            return Optional.empty();
         }
-        try {
-            return Integer.valueOf(str);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+        return Optional.of(Integer.valueOf(str));
     }
 }

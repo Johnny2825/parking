@@ -29,35 +29,49 @@ public class MessageBuilderUtils {
         return String.format(USER_DELETED, userName);
     }
 
-    public static String messageUserCreateReservation(String userName,
-                                                      Long reservationId,
-                                                      String parkingSpaceId,
-                                                      String timeFrom,
-                                                      String timeTo) {
+    public static String messageUserCreateReservation(
+            String userName,
+            Long reservationId,
+            String parkingSpaceId,
+            String timeFrom,
+            String timeTo
+    ) {
         return String.format(USER_CREATE_RESERVATION, userName, reservationId, parkingSpaceId, timeFrom, timeTo);
     }
 
-    public static String messageUserUpdateReservation(String userName,
-                                                      Long reservationId,
-                                                      String parkingSpaceId,
-                                                      String timeFrom,
-                                                      String timeTo) {
+    public static String messageUserUpdateReservation(
+            String userName,
+            Long reservationId,
+            String parkingSpaceId,
+            String timeFrom,
+            String timeTo
+    ) {
         return String.format(USER_UPDATED_RESERVATION, userName, reservationId, parkingSpaceId, timeFrom, timeTo);
     }
 
-    public static String messageUserDeleteReservation(String userName,
-                                                      Long reservationId,
-                                                      String parkingSpaceId,
-                                                      String timeFrom,
-                                                      String timeTo) {
+    public static String messageUserDeleteReservation(
+            String userName,
+            Long reservationId,
+            String parkingSpaceId,
+            String timeFrom,
+            String timeTo
+    ) {
         return String.format(USER_DELETE_RESERVATION, userName, reservationId, parkingSpaceId, timeFrom, timeTo);
     }
 
-    public static String messageUserStartParking(String userName, String parkingSpaceCode, String actionTime) {
+    public static String messageUserStartParking(
+            String userName,
+            String parkingSpaceCode,
+            String actionTime
+    ) {
         return String.format(USER_START_PARKING, userName, parkingSpaceCode, actionTime);
     }
 
-    public static String messageUserFinishParking(String userName, String parkingSpaceCode, String actionTime) {
+    public static String messageUserFinishParking(
+            String userName,
+            String parkingSpaceCode,
+            String actionTime
+    ) {
         return String.format(USER_FINISH_PARKING, userName, parkingSpaceCode, actionTime);
     }
 
