@@ -3,6 +3,12 @@ server:
   servlet:
     context-path: /parking
 
+logging:
+  level:
+#    org.springframework.orm.jpa: DEBUG
+#    org.springframework.transaction: DEBUG
+    ru.example.micro.parking: DEBUG
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres?currentSchema=parking

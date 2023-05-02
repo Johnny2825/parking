@@ -77,7 +77,7 @@ public class ParkingSpaceServiceBase implements ParkingSpaceService {
 
     private ParkingSpaceEntity checkOpportunityStart(
             @NonNull final ParkingSpaceUserRequest parkingSpaceUser
-    ) throws ParkingSpaceNotFoundException {
+    ) throws ParkingSpaceNotFoundException {    //TODO пользователю нельзя занимать одновременно несколько мест
          var parkingSpaceOptional = parkingSpaceRepository.findById(parkingSpaceUser.getParkingSpaceId());
          if (parkingSpaceOptional.isEmpty() || parkingSpaceOptional.get().getReservationAvailable()) {
              throw new ParkingSpaceNotFoundException(parkingSpaceUser.getParkingSpaceId());
