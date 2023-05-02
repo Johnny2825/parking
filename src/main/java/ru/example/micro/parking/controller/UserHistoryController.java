@@ -8,8 +8,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import ru.example.micro.parking.controller.dto.UserHistoryDto;
-import ru.example.micro.parking.service.user.history.UserHistoryService;
+import ru.example.micro.parking.model.dto.UserHistoryResponse;
+import ru.example.micro.parking.service.business.user.history.UserHistoryService;
 
 /**
  * @author Tarkhov Evgeniy
@@ -22,8 +22,8 @@ public class UserHistoryController {
     private final UserHistoryService userHistoryService;
 
     @GetMapping("/user-history/byuser/{userId}")
-    public Page<UserHistoryDto> findAllByUserId(@PathVariable @Positive Long userId,
-                                                Pageable pageable) {
+    public Page<UserHistoryResponse> findAllByUserId(@PathVariable @Positive Long userId,
+                                                     Pageable pageable) {
         return userHistoryService.findAllByUserId(userId, pageable);
     }
 }

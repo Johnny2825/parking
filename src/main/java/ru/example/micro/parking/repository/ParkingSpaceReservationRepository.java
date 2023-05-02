@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.example.micro.parking.entity.ParkingSpaceReservationEntity;
@@ -16,7 +17,8 @@ import java.util.List;
  * @author Tarkhov Evgeniy
  */
 @Repository
-public interface ParkingSpaceReservationRepository extends JpaRepository<ParkingSpaceReservationEntity, Long> {
+public interface ParkingSpaceReservationRepository extends JpaRepository<ParkingSpaceReservationEntity, Long>,
+        QuerydslPredicateExecutor<ParkingSpaceReservationEntity> {
 
     Page<ParkingSpaceReservationEntity> findAllByUserId(Long userId, Pageable pageable);
 
@@ -25,7 +27,9 @@ public interface ParkingSpaceReservationRepository extends JpaRepository<Parking
             "JOIN parking_space sp ON res.parking_space_id = sp.id " +
             "where sp.parking_id = :parkingId",
             nativeQuery = true)
-    Collection<ParkingSpaceReservationEntity> findAllByParkingId(@Param("parkingId") Long parkingId);
+    Collection<ParkingSpaceReservationEntity> findAllByParkingId(
+            @Param("parkingId") Long parkingId
+    );
 
     @Query(value = "FROM ParkingSpaceReservationEntity res " +
             "WHERE res.parkingSpaceId = :parkingSpaceId " +
@@ -33,7 +37,9 @@ public interface ParkingSpaceReservationRepository extends JpaRepository<Parking
             "OR (:timeFrom < res.timeTo AND res.timeTo < :timeTo) " +
             "OR (res.timeFrom < :timeFrom AND :timeFrom < res.timeTo) " +
             "OR (res.timeFrom < :timeTo AND :timeTo < res.timeTo)")
-    List<ParkingSpaceReservationEntity> findByParkingSpaceIdAndTimeRange(@Param("parkingSpaceId") Long parkingSpaceId,
-                                                                         @Param("timeFrom") LocalDateTime timeFrom,
-                                                                         @Param("timeTo") LocalDateTime timeTo);
+    List<ParkingSpaceReservationEntity> findByParkingSpaceIdAndTimeRange(
+            @Param("parkingSpaceId") Long parkingSpaceId,
+            @Param("timeFrom") LocalDateTime timeFrom,
+            @Param("timeTo") LocalDateTime timeTo
+    );
 }

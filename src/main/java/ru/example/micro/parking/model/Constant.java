@@ -34,4 +34,19 @@ public class Constant {
     }
 
 
+    public static class StatusCode {
+        private StatusCode(){}
+
+        public static final String NOT_VALID_DATA = "pp_nvd";
+        public static final String PARKING_SPACE_NOT_EMPTY = "pp_psne";
+        public static final String PARKING_SPACE_NOT_FOUND = "pp_psnf";
+        public static final String TIME_CROSSING = "pp_t";
+        public static final String USER_EXIST = "pp_ue";
+        public static final String USER_NOT_FOUND = "pp_unf";
+        public static final String USER_MISMATCH = "pp_um";
+
+
+
+    }
+
 }

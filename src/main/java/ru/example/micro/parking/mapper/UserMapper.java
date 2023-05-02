@@ -1,15 +1,18 @@
 package ru.example.micro.parking.mapper;
 
-import ru.example.micro.parking.controller.dto.UserDto;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 import ru.example.micro.parking.entity.UserEntity;
-
+import ru.example.micro.parking.model.dto.UserRequest;
+import ru.example.micro.parking.model.dto.UserResponse;
 
 /**
  * @author Tarkhov Evgeniy
  */
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface UserMapper {
 
-    UserDto map(UserEntity userEntity);
+    UserResponse toResponse(UserEntity userEntity);
 
-    UserEntity map(UserDto userDto);
+    UserEntity toEntity(UserRequest userRequest);
 }

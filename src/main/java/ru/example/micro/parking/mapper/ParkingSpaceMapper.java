@@ -1,13 +1,17 @@
 package ru.example.micro.parking.mapper;
 
-import ru.example.micro.parking.controller.dto.ParkingSpaceDto;
+import org.mapstruct.Mapper;
+import org.mapstruct.MappingConstants;
 import ru.example.micro.parking.entity.ParkingSpaceEntity;
-
+import ru.example.micro.parking.model.dto.ParkingSpaceResponse;
 
 /**
  * @author Tarkhov Evgeniy
  */
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface ParkingSpaceMapper {
 
-    ParkingSpaceDto map(ParkingSpaceEntity parkingSpaceEntityOptional);
+//    private static final String PLACE_CODE_FORMAT = "%d-%d";
+
+    ParkingSpaceResponse toResponse(ParkingSpaceEntity parkingSpaceEntity);
 }

@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import ru.example.micro.parking.controller.dto.UserDto;
-import ru.example.micro.parking.service.user.UserService;
+import ru.example.micro.parking.model.dto.UserRequest;
+import ru.example.micro.parking.model.dto.UserResponse;
+import ru.example.micro.parking.service.business.user.UserService;
 
 /**
  * @author Tarkhov Evgeniy
@@ -26,29 +27,29 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/users/{userId}")
-    public ResponseEntity<UserDto> findUserById(@PathVariable("userId") @Positive Long userId) {
+    public ResponseEntity<UserResponse> findUserById(@PathVariable("userId") @Positive Long userId) {
         return userService.findUserById(userId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping("/users")
-    public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto userDto) {
-        return userService.createUser(userDto)
+    public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest userRequest) {
+        return userService.createUser(userRequest)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.noContent().build());
     }
 
     @PutMapping("/users/{userId}")
-    public ResponseEntity<UserDto> updateUser(@PathVariable("userId") @Positive Long userId,
-                                              @Valid @RequestBody UserDto userDto) {
-        return userService.updateUser(userId, userDto)
+    public ResponseEntity<UserResponse> updateUser(@PathVariable("userId") @Positive Long userId,
+                                                  @Valid @RequestBody UserRequest userRequest) {
+        return userService.updateUser(userId, userRequest)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/users/{userId}")
-    public ResponseEntity<UserDto> deleteUser(@PathVariable("userId") @Positive Long userId) {
+    public ResponseEntity<UserResponse> deleteUser(@PathVariable("userId") @Positive Long userId) {
         return userService.deleteUser(userId)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());

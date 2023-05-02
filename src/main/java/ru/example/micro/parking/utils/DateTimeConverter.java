@@ -10,10 +10,9 @@ import static ru.example.micro.parking.model.Constant.FORMATTER;
  * @author Tarkhov Evgeniy
  */
 public class DateTimeConverter {
-    private DateTimeConverter() {
-    }
+    private DateTimeConverter() {}
 
-    public static String localDateTimeToString(@NonNull LocalDateTime dateTime) {
+    public static String timeToString(@NonNull LocalDateTime dateTime) {
         return dateTime.format(FORMATTER);
     }
 }
